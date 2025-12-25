@@ -1,14 +1,11 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MEB Profesyonel BEP Asistanı v7.0 (Akıllı & Hızlı)</title>
-    <!-- Tailwind CSS -->
+    <title>MEB Profesyonel BEP Asistanı v10.3</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <script>
@@ -37,52 +34,143 @@
         ::-webkit-scrollbar-thumb { background: #c7c7c7; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #a8a8a8; }
 
-        /* Checkbox Animasyon */
+        /* Animasyonlar */
+        .fade-in { animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
+
         .checkbox-wrapper:checked + div {
             background-color: #eff6ff;
             border-color: #3b82f6;
         }
-        .checkbox-wrapper:checked + div span {
-            color: #1d4ed8;
-            font-weight: 600;
+        
+        /* Accordion Animasyonu */
+        .accordion-wrapper {
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows 0.3s ease-out;
+        }
+        .accordion-wrapper.open {
+            grid-template-rows: 1fr;
+        }
+        .accordion-content {
+            overflow: hidden;
         }
 
-        /* Hata Animasyonu */
+        /* Multi-Select Dropdown Stilleri */
+        .multi-select-dropdown {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        .multi-select-dropdown.open {
+            max-height: 400px; /* Seçim kolaylığı için yükseklik artırıldı */
+            overflow-y: auto;
+            border: 1px solid #e2e8f0;
+        }
+        
+        /* Zorunlu Alan Hatası */
         .input-error {
             border-color: #ef4444 !important;
             background-color: #fef2f2 !important;
-            animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+            animation: shake 0.3s ease-in-out;
         }
-
         @keyframes shake {
-            10%, 90% { transform: translate3d(-1px, 0, 0); }
-            20%, 80% { transform: translate3d(2px, 0, 0); }
-            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
-            40%, 60% { transform: translate3d(4px, 0, 0); }
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
         }
 
-        /* Tooltip */
-        .tooltip { position: relative; display: inline-block; }
-        .tooltip .tooltiptext {
-            visibility: hidden; width: 200px; background-color: #555; color: #fff; text-align: center;
-            border-radius: 6px; padding: 5px; position: absolute; z-index: 1; bottom: 125%; left: 50%;
-            margin-left: -100px; opacity: 0; transition: opacity 0.3s; font-size: 0.75rem; font-weight: normal;
-        }
-        .tooltip:hover .tooltiptext { visibility: visible; opacity: 1; }
-
-        /* YAZDIRMA STİLLERİ (A4 Formatı) */
+        /* YAZDIRMA STİLLERİ */
         @media print {
             @page { size: A4; margin: 10mm; }
-            body { background: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            body { background: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; font-family: 'Times New Roman', serif; }
             .no-print { display: none !important; }
             .print-only { display: block !important; }
-            .page-break { page-break-before: always; }
-            tr { page-break-inside: avoid; }
+            .page-break { page-break-after: always; display: block; position: relative; }
+            
+            /* Genel Düzen */
+            .bep-page-container {
+                padding-bottom: 20px;
+            }
+
+            /* Başlık Alanı */
+            .header-section {
+                text-align: center;
+                border-bottom: 2px solid #333;
+                margin-bottom: 20px;
+                padding-bottom: 10px;
+            }
+            .header-main { font-size: 12pt; font-weight: bold; }
+            .header-sub { font-size: 14pt; font-weight: bold; margin-top: 5px; }
+            .header-lesson { font-size: 11pt; margin-top: 5px; font-style: italic; }
+
+            /* Tablolar */
             table { width: 100%; border-collapse: collapse; font-size: 10pt; margin-bottom: 15px; }
-            th, td { border: 1px solid #000; padding: 6px 8px; text-align: left; vertical-align: top; }
-            th { background-color: #f0f0f0 !important; font-weight: bold; text-align: center; }
-            .imza-bolumu td { height: 60px; border: none; vertical-align: bottom; text-align: center; font-size: 9pt; }
-            .imza-bolumu .imza-cizgi { border-top: 1px solid #000; margin: 0 5px; padding-top: 2px; }
+            th, td { border: 1px solid #444; padding: 6px 8px; text-align: left; vertical-align: top; }
+            th { background-color: #f3f4f6 !important; font-weight: bold; text-align: center; color: #111; }
+            
+            /* Bilgi Tablosu */
+            .info-table th { width: 18%; background-color: #e5e7eb !important; text-align: left; }
+            
+            /* Hedefler Tablosu */
+            .goals-table th { background-color: #374151 !important; color: white !important; padding: 8px; }
+            .goals-table td { padding: 8px; }
+            
+            /* Eğitsel Performans Kutusu */
+            .perf-box {
+                border: 1px solid #444;
+                margin-bottom: 20px;
+                border-radius: 4px;
+                overflow: hidden;
+            }
+            .perf-header {
+                background-color: #e5e7eb;
+                padding: 6px;
+                font-weight: bold;
+                text-align: center;
+                border-bottom: 1px solid #444;
+                font-size: 10pt;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+            }
+            .perf-content {
+                padding: 10px;
+                font-size: 10pt;
+                line-height: 1.5;
+                text-align: justify;
+            }
+
+            /* İmza Bölümü */
+            .imza-bolumu { 
+                margin-top: 30px; 
+                width: 100%; 
+                break-inside: avoid;
+            }
+            .imza-table { border: none !important; width: 100%; }
+            .imza-table td { 
+                border: none !important; 
+                height: 80px; 
+                vertical-align: top; 
+                text-align: center; 
+                width: 25%; 
+                font-size: 10pt;
+            }
+            .imza-isim {
+                font-weight: bold;
+                margin-bottom: 5px;
+                display: block;
+            }
+            .imza-unvan {
+                font-size: 9pt;
+                font-style: italic;
+                display: block;
+                color: #444;
+            }
+            .imza-cizgi {
+                border-top: 1px solid #aaa;
+                width: 80%;
+                margin: 40px auto 0 auto;
+            }
         }
         
         .print-only { display: none; }
@@ -91,67 +179,118 @@
 </head>
 <body class="bg-slate-100 text-slate-800">
 
-    <!-- KARŞILAMA VE YÖNERGE EKRANI (OVERLAY) -->
-    <div id="welcomeOverlay" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-[100] flex items-center justify-center transition-all duration-700 no-print">
-        <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-lg w-full mx-4 relative overflow-hidden border border-slate-200">
-            <!-- Dekoratif Üst Çizgi -->
+    <!-- KARŞILAMA EKRANI (REHBER) -->
+    <div id="welcomeOverlay" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-[100] flex items-center justify-center transition-all duration-500 no-print">
+        <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-lg w-full mx-4 relative overflow-hidden border border-slate-200 fade-in">
             <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-mebRed via-mebBlue to-mebYellow"></div>
 
-            <!-- Başlık -->
             <div class="text-center mb-6 mt-2">
                 <div class="inline-block p-3 bg-slate-50 rounded-full mb-3 shadow-sm">
                     <i class="fas fa-book-reader text-3xl text-mebRed"></i>
                 </div>
-                <h1 class="text-2xl font-bold text-slate-800">MEB BEP Asistanı v7.0</h1>
-                <p class="text-slate-500 text-sm">Profesyonel, Hızlı ve Mevzuata Uygun</p>
+                <h1 class="text-2xl font-bold text-slate-800">MEB BEP Asistanı v10.3</h1>
+                <p class="text-slate-500 text-sm">Hızlı, Kolay ve Mevzuata Uygun BEP Hazırlayın</p>
             </div>
 
-            <!-- Yönergeler -->
             <div class="space-y-4 mb-8">
-                <!-- Adım 1 -->
                 <div class="flex items-start gap-4 p-3 bg-slate-50 rounded-lg border border-slate-100">
                     <div class="bg-blue-100 text-blue-600 w-8 h-8 rounded-full flex items-center justify-center font-bold shrink-0 text-sm shadow-sm">1</div>
                     <div>
                         <h4 class="font-bold text-slate-700 text-sm">Bilgileri Girin</h4>
-                        <p class="text-xs text-slate-500">Okul ve öğrenci bilgilerini eksiksiz doldurun. Zorunlu alanlar otomatik kontrol edilir.</p>
+                        <p class="text-xs text-slate-500">Öğrenci, kurul ve performans bilgilerini doldurun.</p>
                     </div>
                 </div>
-                 <!-- Adım 2 -->
-                <div class="flex items-start gap-4 p-3 bg-slate-50 rounded-lg border border-slate-100">
+                 <div class="flex items-start gap-4 p-3 bg-slate-50 rounded-lg border border-slate-100">
                     <div class="bg-red-100 text-red-600 w-8 h-8 rounded-full flex items-center justify-center font-bold shrink-0 text-sm shadow-sm">2</div>
                     <div>
-                        <h4 class="font-bold text-slate-700 text-sm">Hedefleri Seçin</h4>
-                        <p class="text-xs text-slate-500">2024 Maarif Modeli'ne uygun ders ve kazanımları listeden seçerek plana ekleyin.</p>
+                        <h4 class="font-bold text-slate-700 text-sm">Hedefleri Belirleyin</h4>
+                        <p class="text-xs text-slate-500">Müfredattan ders ve UDA seçin, KDA'ları ekleyin.</p>
                     </div>
                 </div>
-                 <!-- Adım 3 -->
-                <div class="flex items-start gap-4 p-3 bg-slate-50 rounded-lg border border-slate-100">
+                 <div class="flex items-start gap-4 p-3 bg-slate-50 rounded-lg border border-slate-100">
                     <div class="bg-green-100 text-green-600 w-8 h-8 rounded-full flex items-center justify-center font-bold shrink-0 text-sm shadow-sm">3</div>
                     <div>
-                        <h4 class="font-bold text-slate-700 text-sm">Sonuçlandırın</h4>
-                        <p class="text-xs text-slate-500">'Otomatik Performans' ile zaman kazanın, planı kontrol edip çıktınızı alın.</p>
+                        <h4 class="font-bold text-slate-700 text-sm">Planı Oluşturun</h4>
+                        <p class="text-xs text-slate-500">Otomatik işlemlerle planı tamamlayın ve yazdırın.</p>
                     </div>
                 </div>
             </div>
 
-            <!-- Başla Butonu -->
-            <button onclick="uygulamayiBaslat()" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-bold py-4 rounded-xl shadow-lg hover:shadow-xl transition transform hover:-translate-y-1 group">
-                BEP Hazırlamaya Başla <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+            <button onclick="uygulamayiBaslat()" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-bold py-3 rounded-xl shadow-lg hover:shadow-xl transition transform hover:-translate-y-1 group">
+                Başla <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
             </button>
-
-            <!-- Geliştirici Bilgisi -->
-            <div class="mt-6 text-center pt-4 border-t border-slate-100">
-                <p class="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">Tasarım ve Kodlama</p>
-                <div class="flex items-center justify-center gap-2 mt-1">
-                    <i class="fas fa-code text-slate-300 text-xs"></i>
-                    <p class="text-sm font-bold text-slate-700">Sami GÜREVİN</p>
+        </div>
+    </div>
+    
+    <!-- DETAYLI KULLANIM KILAVUZU MODAL -->
+    <div id="kilavuzModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-[200] hidden items-center justify-center no-print">
+        <div class="bg-white w-full max-w-6xl h-auto max-h-[90vh] rounded-2xl shadow-2xl flex flex-col relative fade-in mx-4">
+            <div class="flex justify-between items-center p-6 border-b border-slate-200 bg-slate-50 rounded-t-2xl">
+                <div class="flex items-center gap-3">
+                     <div class="bg-slate-800 text-white p-2 rounded-lg"><i class="fas fa-info-circle text-xl"></i></div>
+                     <div>
+                         <h2 class="text-xl font-bold text-slate-800">BEP Hazırlama Kılavuzu</h2>
+                         <p class="text-xs text-slate-500">Adım adım profesyonel BEP hazırlama süreci</p>
+                     </div>
                 </div>
+                <button onclick="document.getElementById('kilavuzModal').classList.add('hidden')" class="text-slate-400 hover:text-red-600 transition">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+            </div>
+            
+            <div class="overflow-y-auto p-8">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    
+                    <!-- Adım 1 -->
+                    <div class="flex flex-col h-full bg-slate-50 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                        <div class="p-4 bg-mebBlue/10 border-b border-slate-200 rounded-t-xl flex items-center gap-3">
+                            <span class="bg-mebBlue text-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm shadow-sm">1</span>
+                            <h3 class="font-bold text-mebBlue">Öğrenci & Kurul</h3>
+                        </div>
+                        <div class="p-5 text-sm text-slate-600 space-y-3 leading-relaxed flex-grow">
+                            <p><strong><i class="fas fa-exclamation-circle text-mebRed mr-1"></i>Zorunlu Alanlar:</strong> Okul, öğrenci adı, sınıf ve kurul üyeleri alanları yazdırma işleminden önce mutlaka doldurulmalıdır.</p>
+                            <p><strong>Tanı Seçimi:</strong> RAM raporuna uygun tanıyı seçin. Listede yoksa "Diğer" ile manuel giriş yapın.</p>
+                            <p><strong>Performans:</strong> Hedefleri ekledikten sonra <strong>'Otomatik'</strong> butonunu kullanarak sistemin profesyonel bir performans yazısı oluşturmasını sağlayın.</p>
+                        </div>
+                    </div>
+
+                    <!-- Adım 2 -->
+                    <div class="flex flex-col h-full bg-slate-50 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                        <div class="p-4 bg-mebRed/10 border-b border-slate-200 rounded-t-xl flex items-center gap-3">
+                            <span class="bg-mebRed text-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm shadow-sm">2</span>
+                            <h3 class="font-bold text-mebRed">Hedef & Yöntem</h3>
+                        </div>
+                        <div class="p-5 text-sm text-slate-600 space-y-3 leading-relaxed flex-grow">
+                             <p><strong>Müfredat:</strong> Sınıf ve ders seçimi sonrası UDA'lar listelenir. <strong>Aynı UDA'yı aynı derse iki kez ekleyemezsiniz.</strong></p>
+                             <p><strong>Özelleştirme:</strong> Detay ayarlarından yöntem, teknik ve araç-gereçleri çoklu seçimle belirleyebilirsiniz.</p>
+                             <p><strong>Ekleme:</strong> Seçimleri tamamladıktan sonra "BEP Planına Ekle" butonu ile hedefi sağ panele aktarın.</p>
+                        </div>
+                    </div>
+
+                    <!-- Adım 3 -->
+                    <div class="flex flex-col h-full bg-slate-50 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                        <div class="p-4 bg-mebYellow/20 border-b border-slate-200 rounded-t-xl flex items-center gap-3">
+                            <span class="bg-mebYellow text-black w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm shadow-sm">3</span>
+                            <h3 class="font-bold text-slate-800">Kontrol & Çıktı</h3>
+                        </div>
+                        <div class="p-5 text-sm text-slate-600 space-y-3 leading-relaxed flex-grow">
+                            <p><strong>Kontrol:</strong> Sağ panelden eklenen hedefleri inceleyin, gerekirse silin veya düzenleyin.</p>
+                            <p><strong>Yedekleme:</strong> Çalışmanızı .json formatında kaydedip daha sonra tekrar yükleyebilirsiniz.</p>
+                            <p><strong>Yazdırma:</strong> Tüm zorunlu alanlar doluysa "Yazdır" butonu her ders için ayrı sayfalanmış resmi formatı oluşturur.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            
+            <div class="p-4 border-t border-slate-200 bg-slate-50 rounded-b-2xl text-center">
+                <button onclick="document.getElementById('kilavuzModal').classList.add('hidden')" class="px-8 py-2.5 bg-slate-800 text-white rounded-lg font-bold hover:bg-slate-900 transition shadow-md hover:shadow-lg transform hover:-translate-y-0.5">Anlaşıldı, Başlayalım</button>
             </div>
         </div>
     </div>
 
-    <!-- TOAST BİLDİRİMİ -->
-    <div id="toast" class="fixed bottom-5 right-5 bg-green-600 text-white px-6 py-4 rounded-lg shadow-xl transform translate-y-24 opacity-0 transition-all duration-300 z-50 flex items-center gap-3">
+    <!-- Toast Bildirim -->
+    <div id="toast" class="fixed top-5 right-5 bg-green-600 text-white px-6 py-4 rounded-lg shadow-xl transform -translate-y-24 opacity-0 transition-all duration-300 z-[999] flex items-center gap-3">
         <i class="fas fa-check-circle text-2xl"></i>
         <div>
             <h4 class="font-bold text-sm">Başarılı</h4>
@@ -159,83 +298,81 @@
         </div>
     </div>
     
-    <!-- GİZLİ DOSYA INPUT (YÜKLEME İÇİN) -->
     <input type="file" id="jsonFileInput" accept=".json" class="hidden" onchange="dosyadanYukle(this)">
 
-    <!-- EKRAN GÖRÜNÜMÜ -->
-    <div class="no-print min-h-screen flex flex-col">
+    <!-- ANA EKRAN (NO PRINT) -->
+    <div class="no-print min-h-screen flex flex-col bg-slate-100">
         
-        <!-- Üst Bar -->
+        <!-- Header -->
         <header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 h-18 py-2 flex items-center justify-between">
+            <div class="max-w-[1400px] mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
                 <div class="flex items-center gap-3">
-                    <div class="bg-mebRed text-white p-3 rounded-lg shadow-md">
+                    <div class="bg-mebRed text-white p-2 rounded-lg shadow-md">
                         <i class="fas fa-book-reader text-xl"></i>
                     </div>
                     <div>
-                        <h1 class="font-bold text-lg text-slate-800 leading-tight">MEB BEP Asistanı v7.0</h1>
-                        <p class="text-[10px] text-slate-500 font-medium">Geliştirici: Sami GÜREVİN (2024 Maarif Modeli Uyumlu)</p>
+                        <h1 class="font-bold text-lg text-slate-800 leading-tight">MEB BEP Asistanı v10.3</h1>
+                        <p class="text-[10px] text-slate-500 font-medium">Geliştirici: Sami GÜREVİN</p>
                     </div>
                 </div>
                 <div class="flex gap-2">
-                    <div class="hidden md:flex gap-2 mr-2 border-r border-slate-200 pr-2">
-                        <button onclick="verileriYedekle()" class="px-3 py-2 text-xs font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-lg transition" title="Bilgisayara Kaydet">
-                            <i class="fas fa-download mr-1"></i> Yedekle
-                        </button>
-                        <button onclick="document.getElementById('jsonFileInput').click()" class="px-3 py-2 text-xs font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-lg transition" title="Yedekten Yükle">
-                            <i class="fas fa-upload mr-1"></i> Yükle
-                        </button>
-                    </div>
+                    <button onclick="document.getElementById('kilavuzModal').classList.remove('hidden')" class="px-3 py-2 text-sm font-medium text-mebBlue bg-blue-50 hover:bg-blue-100 rounded-lg transition border border-blue-200 flex items-center gap-2">
+                        <i class="fas fa-question-circle"></i> <span class="hidden sm:inline">Nasıl Kullanılır?</span>
+                    </button>
+                    <div class="h-8 w-px bg-slate-200 mx-1"></div>
+                    <button onclick="verileriYedekle()" class="px-3 py-2 text-xs font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-lg transition hidden md:block" title="Bilgisayara Kaydet">
+                        <i class="fas fa-download mr-1"></i> Yedekle
+                    </button>
+                    <button onclick="document.getElementById('jsonFileInput').click()" class="px-3 py-2 text-xs font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-lg transition hidden md:block" title="Yedekten Yükle">
+                        <i class="fas fa-upload mr-1"></i> Yükle
+                    </button>
                     <button onclick="verileriTemizle()" class="px-3 py-2 text-sm font-medium text-red-600 bg-red-50 hover:bg-red-100 rounded-lg transition border border-red-200">
                         <i class="fas fa-trash-alt mr-1"></i> Yeni
                     </button>
-                    <button onclick="onizlemeAc()" class="px-4 py-2 text-sm font-medium text-white bg-mebRed hover:bg-red-700 rounded-lg shadow-md hover:shadow-lg transition flex items-center gap-2">
+                    <button onclick="tamamlaVeYazdirKontrol()" class="px-4 py-2 text-sm font-bold text-white bg-mebRed hover:bg-red-700 rounded-lg shadow-md hover:shadow-lg transition flex items-center gap-2">
                         <i class="fas fa-print"></i> Yazdır
                     </button>
                 </div>
             </div>
         </header>
 
-        <main class="flex-grow max-w-7xl mx-auto w-full p-4 sm:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <main class="flex-grow w-full max-w-[1400px] mx-auto p-4 sm:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
             
-            <!-- SOL PANEL: ÖĞRENCİ BİLGİLERİ (4 Kolon) -->
-            <div class="lg:col-span-4 space-y-6">
+            <!-- SOL KOLON: ADIM 1 -->
+            <div class="lg:col-span-4 flex flex-col gap-4">
                 
-                <!-- Adım 1 -->
-                <div class="bg-blue-50 border-l-4 border-blue-500 p-3 rounded-r-lg text-sm text-blue-800 mb-2 shadow-sm flex justify-between items-center">
-                    <span><span class="font-bold">ADIM 1:</span> Kimlik & Performans</span>
-                    <i class="fas fa-user text-blue-300"></i>
+                <!-- ADIM 1 BAŞLIĞI -->
+                <div class="flex items-center gap-3 pb-2 border-b-2 border-mebBlue/30">
+                    <div class="w-8 h-8 rounded-lg bg-mebBlue text-white flex items-center justify-center font-bold text-sm shadow-sm">1</div>
+                    <h2 class="font-bold text-slate-700 text-lg uppercase tracking-tight">Öğrenci & Kurul</h2>
                 </div>
 
-                <!-- 1. Öğrenci Bilgileri -->
                 <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                    <div class="bg-slate-50 px-4 py-3 border-b border-slate-200 flex items-center justify-between">
+                        <h3 class="font-bold text-slate-700 text-sm"><i class="fas fa-user-graduate text-mebBlue mr-2"></i>Kimlik Bilgileri</h3>
+                    </div>
                     <div class="p-4 space-y-3">
-                        <!-- Okul Adı (YENİ) -->
                         <div>
                             <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Okul Adı <span class="text-red-500">*</span></label>
-                            <div class="relative">
-                                <i class="fas fa-school absolute left-3 top-3 text-slate-400 text-xs"></i>
-                                <input type="text" id="okulAd" class="w-full pl-8 text-sm border-slate-300 rounded-lg focus:ring-mebRed focus:border-mebRed" placeholder="Örn: Atatürk İlkokulu">
-                            </div>
+                            <input type="text" id="okulAd" class="w-full text-sm border-slate-300 rounded-lg focus:ring-mebRed focus:border-mebRed transition-all" placeholder="Örn: Cumhuriyet İlkokulu">
                         </div>
-
                         <div>
                             <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Öğrenci Adı Soyadı <span class="text-red-500">*</span></label>
-                            <input type="text" id="ogrAd" class="w-full text-sm border-slate-300 rounded-lg focus:ring-mebRed focus:border-mebRed" placeholder="Örn: Ali Yılmaz">
+                            <input type="text" id="ogrAd" class="w-full text-sm border-slate-300 rounded-lg focus:ring-mebRed focus:border-mebRed transition-all" placeholder="Örn: Ali Yılmaz">
                         </div>
                         <div class="grid grid-cols-2 gap-3">
                             <div>
-                                <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Öğrenci No <span class="text-gray-400 font-normal lowercase">(İsteğe Bağlı)</span></label>
-                                <input type="text" id="ogrNo" class="w-full text-sm border-slate-300 rounded-lg" placeholder="123">
+                                <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Sınıf <span class="text-red-500">*</span></label>
+                                <input type="text" id="ogrSinif" class="w-full text-sm border-slate-300 rounded-lg transition-all" placeholder="Örn: 3/A">
                             </div>
                             <div>
-                                <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Sınıf <span class="text-red-500">*</span></label>
-                                <input type="text" id="ogrSinif" class="w-full text-sm border-slate-300 rounded-lg" placeholder="3/A">
+                                <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Numara</label>
+                                <input type="text" id="ogrNo" class="w-full text-sm border-slate-300 rounded-lg transition-all" placeholder="123">
                             </div>
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Eğitsel Tanı <span class="text-red-500">*</span> <span class="tooltip text-slate-400 cursor-help"><i class="fas fa-question-circle"></i><span class="tooltiptext">RAM Raporunda yer alan tanıyı seçiniz.</span></span></label>
-                            <select id="taniSecimi" onchange="toggleManualInput('taniSecimi', 'taniManuel')" class="w-full text-sm border-slate-300 rounded-lg bg-white focus:ring-mebRed mb-2">
+                            <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Eğitsel Tanı <span class="text-red-500">*</span></label>
+                            <select id="taniSecimi" onchange="toggleManualInput('taniSecimi', 'taniManuel')" class="w-full text-sm border-slate-300 rounded-lg mb-2 transition-all">
                                 <option value="">Tanı Seçiniz...</option>
                                 <option value="Özgül Öğrenme Güçlüğü">Özgül Öğrenme Güçlüğü</option>
                                 <option value="Hafif Düzey Zihinsel Yetersizlik">Hafif Düzey Zihinsel Yetersizlik</option>
@@ -248,98 +385,76 @@
                                 <option value="Bedensel Yetersizlik">Bedensel Yetersizlik</option>
                                 <option value="Diğer">Diğer (Elle Giriniz)</option>
                             </select>
-                            <input type="text" id="taniManuel" class="hidden w-full text-sm border-slate-300 rounded-lg border-2 border-red-200" placeholder="Tanıyı buraya yazınız...">
+                            <input type="text" id="taniManuel" class="hidden w-full text-sm border-slate-300 rounded-lg border-2 border-red-200" placeholder="Tanıyı yazınız...">
                         </div>
                         
-                        <!-- Hızlı Tarih Butonları (YENİ) -->
-                        <div class="bg-slate-50 p-2 rounded border border-slate-200">
-                             <label class="block text-xs font-semibold text-slate-500 uppercase mb-2">Hızlı Tarih Seçimi</label>
-                             <div class="flex gap-1 mb-2">
-                                 <button onclick="tarihAta('1')" class="flex-1 text-[10px] bg-white border border-slate-300 text-slate-600 hover:bg-slate-100 py-1 px-2 rounded">1. Dönem</button>
-                                 <button onclick="tarihAta('2')" class="flex-1 text-[10px] bg-white border border-slate-300 text-slate-600 hover:bg-slate-100 py-1 px-2 rounded">2. Dönem</button>
-                                 <button onclick="tarihAta('tam')" class="flex-1 text-[10px] bg-white border border-slate-300 text-slate-600 hover:bg-slate-100 py-1 px-2 rounded">Tüm Yıl</button>
+                        <!-- Tarih -->
+                        <div class="bg-blue-50 p-2 rounded border border-blue-100">
+                             <div class="flex justify-between items-center mb-1">
+                                 <label class="text-xs font-bold text-blue-700">BEP Tarih Aralığı</label>
+                                 <button onclick="tarihAta('tam')" class="text-[10px] bg-white border border-blue-200 text-blue-600 px-2 py-0.5 rounded hover:bg-blue-100">Tüm Yıl</button>
                              </div>
-                             <div class="grid grid-cols-2 gap-3">
-                                <div>
-                                    <label class="block text-[10px] text-slate-400 mb-1">Başlangıç</label>
-                                    <input type="date" id="basTarih" class="w-full text-xs border-slate-300 rounded">
-                                </div>
-                                <div>
-                                    <label class="block text-[10px] text-slate-400 mb-1">Bitiş</label>
-                                    <input type="date" id="bitTarih" class="w-full text-xs border-slate-300 rounded">
-                                </div>
-                            </div>
+                             <div class="flex gap-2">
+                                 <input type="date" id="basTarih" class="w-full text-xs border-slate-300 rounded">
+                                 <span class="self-center">-</span>
+                                 <input type="date" id="bitTarih" class="w-full text-xs border-slate-300 rounded">
+                             </div>
                         </div>
-
                     </div>
                 </div>
 
-                <!-- 2. Kurul Üyeleri -->
+                <!-- Kurul Üyeleri (Accordion) -->
                 <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-                    <div class="bg-slate-50 px-4 py-2 border-b border-slate-200">
-                        <h2 class="font-semibold text-xs text-slate-700 flex justify-between items-center">
-                            <span><i class="fas fa-users mr-2 text-mebRed"></i>Kurul Üyeleri <span class="text-red-500">*</span></span>
-                        </h2>
+                    <div class="bg-slate-50 px-4 py-2 border-b border-slate-200 cursor-pointer hover:bg-slate-100 transition-colors" onclick="toggleAccordion('kurulBody', 'kurulIcon')">
+                         <h3 class="font-bold text-slate-700 text-sm flex justify-between items-center">
+                             <span><i class="fas fa-users text-mebBlue mr-2"></i>Kurul Üyeleri <span class="text-red-500 text-xs ml-1">(Zorunlu)</span></span>
+                             <i id="kurulIcon" class="fas fa-chevron-down text-xs text-slate-400 transition-transform duration-300"></i>
+                         </h3>
                     </div>
-                    <div id="kurulBody" class="p-4 space-y-2">
-                        <div>
-                             <label class="text-[10px] text-slate-400 block mb-0.5">Birim Başkanı / Müdür</label>
-                             <input type="text" id="mudurAd" class="w-full text-sm border-slate-300 rounded-lg" placeholder="Ad Soyad">
+                    <div id="kurulBody" class="accordion-wrapper">
+                        <div class="accordion-content p-4 space-y-2 bg-white">
+                            <div><input type="text" id="mudurAd" class="w-full text-xs border-slate-300 rounded focus:ring-mebBlue focus:border-mebBlue" placeholder="Birim Başkanı / Müdür *"></div>
+                            <div><input type="text" id="rehberAd" class="w-full text-xs border-slate-300 rounded focus:ring-mebBlue focus:border-mebBlue" placeholder="Rehber Öğretmen *"></div>
+                            <div><input type="text" id="sinifOgretmenAd" class="w-full text-xs border-slate-300 rounded focus:ring-mebBlue focus:border-mebBlue" placeholder="Sınıf Öğretmeni *"></div>
+                            <div><input type="text" id="veliAd" class="w-full text-xs border-slate-300 rounded focus:ring-mebBlue focus:border-mebBlue" placeholder="Veli *"></div>
                         </div>
-                        <div>
-                            <label class="text-[10px] text-slate-400 block mb-0.5">Rehber Öğretmen</label>
-                            <input type="text" id="rehberAd" class="w-full text-sm border-slate-300 rounded-lg" placeholder="Ad Soyad">
-                       </div>
-                       <div>
-                            <label class="text-[10px] text-slate-400 block mb-0.5">Sınıf Öğretmeni</label>
-                            <input type="text" id="sinifOgretmenAd" class="w-full text-sm border-slate-300 rounded-lg" placeholder="Ad Soyad">
-                       </div>
-                       <div>
-                            <label class="text-[10px] text-slate-400 block mb-0.5">Veli</label>
-                            <input type="text" id="veliAd" class="w-full text-sm border-slate-300 rounded-lg" placeholder="Ad Soyad">
-                       </div>
                     </div>
                 </div>
 
-                <!-- 3. Eğitsel Performans -->
-                <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-                    <div class="bg-slate-50 px-4 py-3 border-b border-slate-200 flex justify-between items-center">
-                        <h2 class="font-semibold text-slate-700"><i class="fas fa-chart-line mr-2 text-mebRed"></i>Eğitsel Performans</h2>
-                        <div class="flex gap-1">
-                            <button onclick="performansKopyala()" class="text-xs bg-white text-slate-600 px-2 py-1 rounded border border-slate-200 hover:bg-slate-50 transition" title="Kopyala">
-                                <i class="far fa-copy"></i>
-                            </button>
-                            <button onclick="otomatikPerformansOlustur()" class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded border border-green-200 hover:bg-green-200 transition font-bold shadow-sm">
-                                <i class="fas fa-magic mr-1"></i> Otomatik Yaz
-                            </button>
-                        </div>
+                <!-- Performans -->
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden flex-grow flex flex-col">
+                    <div class="bg-slate-50 px-4 py-2 border-b border-slate-200 flex justify-between items-center">
+                        <h3 class="font-bold text-slate-700 text-sm"><i class="fas fa-chart-line text-mebBlue mr-2"></i>Eğitsel Performans</h3>
+                        <button onclick="otomatikPerformansOlustur()" class="text-[10px] bg-green-100 text-green-700 px-2 py-1 rounded hover:bg-green-200 font-bold transition-colors">
+                            <i class="fas fa-magic mr-1"></i> Otomatik
+                        </button>
                     </div>
-                    <div class="p-4">
-                        <div class="bg-yellow-50 text-xs text-yellow-800 p-2 rounded border border-yellow-200 mb-2">
-                            <i class="fas fa-info-circle mr-1"></i> Önce hedefleri seçin, sonra "Otomatik Yaz" butonuna basarak öğrencinin yapamadıklarına odaklanan bir metin oluşturun.
-                        </div>
-                        <textarea id="ogrPerf" rows="8" class="w-full text-sm border-slate-300 rounded-lg focus:ring-mebRed focus:border-mebRed" placeholder="Manuel giriş yapabilir veya hedefleri seçtikten sonra otomatik oluşturabilirsiniz..."></textarea>
+                    <div class="p-2 flex-grow">
+                        <textarea id="ogrPerf" class="w-full h-full min-h-[100px] text-sm border-slate-300 rounded-lg resize-none focus:ring-mebRed focus:border-mebRed" placeholder="Öğrencinin performans düzeyi..."></textarea>
                     </div>
                 </div>
-
             </div>
 
-            <!-- ORTA PANEL: MÜFREDAT & KAZANIMLAR (5 Kolon) -->
-            <div class="lg:col-span-5 space-y-6">
-                
-                <!-- Adım 2 -->
-                <div class="bg-blue-50 border-l-4 border-blue-500 p-3 rounded-r-lg text-sm text-blue-800 mb-2 shadow-sm flex justify-between items-center">
-                    <span><span class="font-bold">ADIM 2:</span> Hedef Belirleme</span>
-                    <i class="fas fa-bullseye text-blue-300"></i>
+            <!-- ORTA KOLON: ADIM 2 -->
+            <div class="lg:col-span-5 flex flex-col gap-4">
+
+                <!-- ADIM 2 BAŞLIĞI -->
+                <div class="flex items-center gap-3 pb-2 border-b-2 border-mebRed/30">
+                    <div class="w-8 h-8 rounded-lg bg-mebRed text-white flex items-center justify-center font-bold text-sm shadow-sm">2</div>
+                    <h2 class="font-bold text-slate-700 text-lg uppercase tracking-tight">Hedef Belirleme</h2>
                 </div>
 
                 <div class="bg-white rounded-xl shadow-sm border border-slate-200 h-full flex flex-col">
-                    <div class="p-4 flex-grow flex flex-col">
-                        <!-- Seçimler -->
-                        <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div class="bg-slate-50 px-4 py-3 border-b border-slate-200">
+                        <h3 class="font-bold text-slate-700 text-sm"><i class="fas fa-bullseye text-mebRed mr-2"></i>Müfredat ve Kazanımlar</h3>
+                    </div>
+                    
+                    <div class="p-4 space-y-4 flex-grow overflow-y-auto">
+                        <!-- Ders Seçimi -->
+                        <div class="grid grid-cols-2 gap-3">
                             <div>
                                 <label class="block text-xs font-bold text-slate-600 mb-1">Sınıf Düzeyi</label>
-                                <select id="sinifSecimi" onchange="dersleriGetir()" class="w-full border-slate-300 rounded-lg text-sm bg-slate-50 focus:ring-mebRed">
+                                <select id="sinifSecimi" onchange="dersleriGetir()" class="w-full border-slate-300 rounded-lg text-sm bg-slate-50 focus:ring-2 focus:ring-mebRed focus:border-mebRed transition-all duration-200 hover:border-mebRed">
                                     <option value="">Seçiniz...</option>
                                     <option value="1">1. Sınıf</option>
                                     <option value="2">2. Sınıf</option>
@@ -349,325 +464,354 @@
                             </div>
                             <div>
                                 <label class="block text-xs font-bold text-slate-600 mb-1">Ders</label>
-                                <select id="dersSecimi" onchange="udalariGetir()" disabled class="w-full border-slate-300 rounded-lg text-sm bg-slate-50 focus:ring-mebRed disabled:opacity-50">
-                                    <option value="">Önce sınıf seçin...</option>
+                                <select id="dersSecimi" onchange="udalariGetir()" disabled class="w-full border-slate-300 rounded-lg text-sm bg-slate-50 disabled:opacity-50 focus:ring-2 focus:ring-mebRed focus:border-mebRed transition-all duration-200 hover:border-mebRed">
+                                    <option value="">Önce sınıf...</option>
                                 </select>
                             </div>
                         </div>
 
-                        <!-- UDA Seçimi -->
-                        <div id="udaKutusu" class="hidden mb-4">
-                            <label class="block text-xs font-bold text-mebBlue mb-1">Uzun Dönemli Amaç (UDA)</label>
-                            <select id="udaSecimi" onchange="kdalariGetir()" class="w-full text-sm border-blue-300 rounded-lg focus:ring-blue-500 bg-blue-50">
-                                <option value="">Hedef seçiniz...</option>
-                            </select>
-                            <input type="text" id="udaManuel" class="hidden w-full text-sm border-blue-300 rounded-lg mt-2" placeholder="Hedefi buraya yazınız...">
-                        </div>
-
-                        <!-- AYARLAR (YÖNTEM/TEKNİK/DEĞERLENDİRME) -->
-                        <div id="settingsBox" class="hidden bg-gray-50 border border-gray-200 rounded-lg p-3 mb-4">
-                            <div class="grid grid-cols-2 gap-3 mb-3">
-                                <div>
-                                    <label class="block text-xs font-bold text-slate-600 mb-1">Yöntem / Teknik</label>
-                                    <select id="yontemSecimi" class="w-full text-xs border-slate-300 rounded-lg focus:ring-mebRed">
-                                        <option selected>Anlatım, Soru-Cevap</option>
-                                        <option>Doğrudan Öğretim (Model Olma)</option>
-                                        <option>Basamaklandırılmış Öğretim</option>
-                                        <option>Fırsat Öğretimi</option>
-                                        <option>Gösterip Yaptırma</option>
-                                        <option>Drama / Oyun</option>
-                                        <option>Akran Öğretimi</option>
+                        <!-- UDA Seçimi (Özel Vurgu ile) -->
+                        <div id="udaContainer" class="accordion-wrapper">
+                             <div class="accordion-content">
+                                <label class="block text-xs font-bold text-mebBlue mb-1 flex items-center gap-2">
+                                    <i class="fas fa-crosshairs"></i> Uzun Dönemli Amaç (UDA)
+                                </label>
+                                <div class="p-1 bg-blue-50/50 rounded-lg border border-blue-100">
+                                    <select id="udaSecimi" onchange="kdalariGetir()" class="w-full text-sm border-blue-300 rounded-lg bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm transition-all py-2">
+                                        <option value="">Hedef seçiniz...</option>
                                     </select>
+                                    <input type="text" id="udaManuel" class="hidden w-full text-sm border-blue-300 rounded-lg bg-white placeholder-slate-400 mt-2" placeholder="Kendi hedefinizi yazınız...">
                                 </div>
-                                <div>
-                                    <label class="block text-xs font-bold text-slate-600 mb-1">Araç / Gereç</label>
-                                    <select id="aracSecimi" class="w-full text-xs border-slate-300 rounded-lg focus:ring-mebRed">
-                                        <option selected>Ders Kitabı, Defter</option>
-                                        <option>Görsel Materyaller</option>
-                                        <option>Somut Nesneler</option>
-                                        <option>EBA / Dijital İçerik</option>
-                                        <option>Bireyselleştirilmiş Materyal</option>
-                                        <option>Kavram Haritaları</option>
-                                    </select>
+                             </div>
+                        </div>
+
+                        <!-- Detay Ayarları (Accordion Style) -->
+                        <div id="detayAyarlari" class="accordion-wrapper border-t border-slate-100 mt-2">
+                            <div class="accordion-content space-y-3 pt-3">
+                                <!-- Öğretim Yöntemleri -->
+                                <div class="relative">
+                                    <label class="block text-xs font-bold text-slate-600 mb-1">Öğretim Yöntem ve Teknikleri</label>
+                                    <button onclick="toggleDropdown('yontemDropdown')" class="w-full text-left text-xs bg-white border border-slate-300 rounded-lg px-3 py-2 flex justify-between items-center hover:border-mebBlue transition-colors">
+                                        <span id="yontemOzet" class="truncate">Anlatım, Soru-Cevap (Varsayılan)</span>
+                                        <i class="fas fa-chevron-down text-slate-400"></i>
+                                    </button>
+                                    <div id="yontemDropdown" class="multi-select-dropdown w-full bg-white shadow-md border border-slate-200 rounded-lg mt-1 z-10">
+                                        <!-- JS ile doldurulacak -->
+                                    </div>
                                 </div>
-                            </div>
-                            <div>
-                                <label class="block text-xs font-bold text-slate-600 mb-1">Değerlendirme</label>
-                                <select id="degerlendirmeSecimi" class="w-full text-xs border-slate-300 rounded-lg focus:ring-mebRed">
-                                    <option selected>%60 Başarı Ölçütü</option>
-                                    <option>%80 Başarı Ölçütü</option>
-                                    <option>3/4 Oranında Doğru Tepki</option>
-                                    <option>Gözlem Formu / Kontrol Listesi</option>
-                                    <option>Ürün Dosyası (Portfolyo)</option>
-                                    <option>Performans Görevi</option>
-                                </select>
+
+                                <!-- Araç Gereçler -->
+                                <div class="relative">
+                                    <label class="block text-xs font-bold text-slate-600 mb-1">Eğitim Araç ve Gereçleri</label>
+                                    <button onclick="toggleDropdown('aracDropdown')" class="w-full text-left text-xs bg-white border border-slate-300 rounded-lg px-3 py-2 flex justify-between items-center hover:border-mebBlue transition-colors">
+                                        <span id="aracOzet" class="truncate">Ders Kitabı/Defter (Varsayılan)</span>
+                                        <i class="fas fa-chevron-down text-slate-400"></i>
+                                    </button>
+                                    <div id="aracDropdown" class="multi-select-dropdown w-full bg-white shadow-md border border-slate-200 rounded-lg mt-1 z-10">
+                                        <!-- JS ile doldurulacak -->
+                                    </div>
+                                </div>
+
+                                <!-- Değerlendirme ve Ölçüt -->
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div class="relative">
+                                        <label class="block text-xs font-bold text-slate-600 mb-1">Değerlendirme</label>
+                                        <button onclick="toggleDropdown('degerlendirmeDropdown')" class="w-full text-left text-xs bg-white border border-slate-300 rounded-lg px-3 py-2 flex justify-between items-center hover:border-mebBlue transition-colors">
+                                            <span id="degerlendirmeOzet" class="truncate">Gözlem Formu...</span>
+                                            <i class="fas fa-chevron-down text-slate-400"></i>
+                                        </button>
+                                        <div id="degerlendirmeDropdown" class="multi-select-dropdown w-full bg-white shadow-md border border-slate-200 rounded-lg mt-1 z-10">
+                                            <!-- JS ile doldurulacak -->
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-bold text-slate-600 mb-1">Başarı Ölçütü</label>
+                                        <select id="olcutSecimi" class="w-full text-xs border-slate-300 rounded-lg">
+                                            <option value="%60">%60</option>
+                                            <option value="%75">%75</option>
+                                            <option value="%80">%80</option>
+                                            <option value="%100">%100</option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-                        <!-- KDA Listesi -->
-                        <div id="kdaKutusu" class="hidden flex-grow flex flex-col">
-                            <div class="flex justify-between items-center mb-2 bg-slate-100 p-2 rounded-t-lg border-b border-slate-200">
-                                <label class="text-sm font-bold text-slate-700">Kısa Dönemli Amaçlar (Kazanımlar)</label>
-                                <div class="flex items-center gap-2">
-                                     <input type="checkbox" id="selectAllKda" onchange="tumunuSec()" class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500">
-                                     <label for="selectAllKda" class="text-xs text-slate-600 cursor-pointer select-none">Tümünü Seç</label>
-                                </div>
-                            </div>
-                            
-                            <div class="relative flex-grow border border-slate-200 rounded-b-lg bg-white overflow-hidden mb-4 h-64">
-                                <div id="checkboxListesi" class="absolute inset-0 overflow-y-auto p-2 space-y-1">
-                                    <!-- Checkboxlar Buraya Gelecek -->
-                                </div>
-                            </div>
+                        <!-- KDA Seçimi -->
+                        <div id="kdaContainer" class="accordion-wrapper flex-grow">
+                             <div class="accordion-content flex flex-col h-full pt-2">
+                                 <div class="flex justify-between items-center mb-1">
+                                     <label class="text-xs font-bold text-slate-700">Kısa Dönemli Amaçlar (KDA)</label>
+                                     <div class="flex items-center gap-1" id="tumunuSecContainer">
+                                        <input type="checkbox" id="tumunuSec" onchange="tumKdaSec()" class="rounded text-mebRed focus:ring-mebRed w-3 h-3">
+                                        <label for="tumunuSec" class="text-[10px] text-slate-500 cursor-pointer">Tümünü Seç</label>
+                                     </div>
+                                 </div>
+                                 
+                                 <!-- KDA Listesi Scroll Area -->
+                                 <div class="border border-slate-200 rounded-lg bg-slate-50 p-2 overflow-y-auto max-h-[180px] min-h-[100px]" id="kdaListesi">
+                                     <!-- Checkboxlar buraya gelecek -->
+                                 </div>
+                                 
+                                 <!-- Manuel KDA Alanı (Sadece Manuel UDA seçilirse görünür) -->
+                                 <textarea id="kdaManuel" class="hidden w-full h-[150px] text-sm border-slate-300 rounded-lg mt-2 p-2 focus:ring-mebRed" placeholder="Kısa dönemli amaçları her satıra bir tane gelecek şekilde yazınız..."></textarea>
 
-                            <button onclick="amaclariEkle()" class="w-full py-3 bg-mebRed hover:bg-red-700 text-white font-bold rounded-lg shadow-md hover:shadow-lg transition flex justify-center items-center gap-2 transform active:scale-95">
-                                <i class="fas fa-plus-circle"></i> BEP Planına Ekle
-                            </button>
-                        </div>
-                        
-                        <div id="bosMesaj" class="flex-grow flex flex-col items-center justify-center text-slate-400 py-10 text-center px-4">
-                            <i class="fas fa-mouse-pointer text-4xl mb-3 opacity-20"></i>
-                            <p class="text-sm font-medium">Başlamak için Sınıf ve Ders seçin.</p>
-                            <p class="text-xs mt-2 text-slate-400">2024 Maarif Modeli ve Öğretim Programlarına Uygundur.</p>
+                                 <button onclick="planaEkle()" class="w-full mt-3 bg-slate-800 hover:bg-slate-900 text-white font-bold py-3 rounded-lg shadow-lg transition transform active:scale-95 flex items-center justify-center gap-2 hover:-translate-y-0.5">
+                                     <i class="fas fa-plus-circle"></i> BEP Planına Ekle
+                                 </button>
+                             </div>
                         </div>
 
+                        <div id="bosMesaj" class="flex flex-col items-center justify-center text-slate-400 py-10 transition-opacity duration-300">
+                            <i class="fas fa-mouse-pointer text-3xl mb-2 opacity-30"></i>
+                            <span class="text-xs">Başlamak için Sınıf ve Ders seçin.</span>
+                        </div>
                     </div>
                 </div>
-
             </div>
 
-            <!-- SAĞ PANEL: ÖZET VE LİSTE (3 Kolon) -->
-            <div class="lg:col-span-3 space-y-6">
-                
-                <!-- Adım 3 -->
-                <div class="bg-blue-50 border-l-4 border-blue-500 p-3 rounded-r-lg text-sm text-blue-800 mb-2 shadow-sm flex justify-between items-center">
-                    <span><span class="font-bold">ADIM 3:</span> Kontrol & Çıktı</span>
-                    <i class="fas fa-print text-blue-300"></i>
+            <!-- SAĞ KOLON: ADIM 3 -->
+            <div class="lg:col-span-3 flex flex-col gap-4">
+
+                <!-- ADIM 3 BAŞLIĞI -->
+                <div class="flex items-center gap-3 pb-2 border-b-2 border-mebYellow/50">
+                    <div class="w-8 h-8 rounded-lg bg-mebYellow text-black flex items-center justify-center font-bold text-sm shadow-sm">3</div>
+                    <h2 class="font-bold text-slate-700 text-lg uppercase tracking-tight">Plan Özeti</h2>
                 </div>
 
                 <div class="bg-white rounded-xl shadow-sm border border-slate-200 h-full flex flex-col">
-                    
-                    <!-- İstatistik Bölümü -->
                     <div class="p-4 border-b border-slate-100 bg-slate-50">
-                         <h3 class="text-xs font-bold text-slate-700 mb-2 uppercase">Plan Dağılımı</h3>
-                         <div id="istatistikKutusu" class="text-xs space-y-1">
-                             <div class="text-slate-400 italic">Veri yok.</div>
-                         </div>
+                          <h3 class="text-xs font-bold text-slate-700 mb-2 uppercase">Plan Dağılımı</h3>
+                          <div id="istatistikKutusu" class="text-xs space-y-1">
+                              <div class="text-slate-400 italic">Veri yok.</div>
+                          </div>
                     </div>
 
                     <div class="bg-slate-50 px-4 py-2 border-b border-slate-200 flex justify-between items-center">
-                        <h2 class="font-semibold text-slate-700 text-sm"><i class="fas fa-list-ul mr-2 text-mebRed"></i>Eklenen Hedefler</h2>
-                        <span id="toplamAmacRozeti" class="bg-mebBlue text-white text-[10px] px-2 py-0.5 rounded-full font-bold">0</span>
+                        <h3 class="font-bold text-slate-700 text-sm">Eklenen Hedefler</h3>
+                        <span id="hedefSayisi" class="bg-mebRed text-white text-[10px] font-bold px-2 py-0.5 rounded-full">0</span>
                     </div>
                     
-                    <div class="p-2 flex-grow overflow-y-auto max-h-[500px]" id="planListesi">
-                        <!-- Eklenenler buraya gelecek -->
-                        <div class="text-center py-8 text-slate-400 text-sm italic">
-                            Henüz plan oluşturulmadı.
-                        </div>
-                    </div>
-
-                    <div class="p-4 border-t border-slate-200 bg-slate-50 rounded-b-xl space-y-2">
-                        <button onclick="onizlemeAc()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg shadow transition flex items-center justify-center gap-2 transform hover:scale-105">
-                            <i class="fas fa-check"></i> Tamamla ve Yazdır
-                        </button>
+                    <div id="planListesi" class="p-3 flex-grow overflow-y-auto max-h-[500px] space-y-2">
+                        <div class="text-center py-8 text-slate-400 text-xs italic">Henüz hedef eklenmedi.</div>
                     </div>
                 </div>
-
             </div>
 
         </main>
-        
     </div>
 
-    <!-- JAVASCRIPT: DATA & LOGIC -->
+    <!-- YAZDIRMA ALANI (PRINT ONLY) -->
+    <div id="printArea" class="print-only"></div>
+
     <script>
-        // --- 1. GÜNCEL MÜFREDAT VERİTABANI (2024 MAARİF MODELİ & PROGRAMLARI) ---
-        // Yapı: Sınıf -> Ders -> { UDA (Alan/Tema), KDA[] (Kazanım/Öğrenme Çıktısı) }
+        // --- VERİ SABİTLERİ ---
+        const OGRETIM_YONTEMLERI = [
+            "Anlatım Yöntemi", "Artan Bekleme Süreli Öğretim", "Aşamalı Yardımla Öğretim", "Ba Sa Ra Yöntemi", 
+            "Bilgisayar Destekli Öğretim Yöntemi", "Davranışsal Beceri Öğretimi", "Demostrasyon", "Deney ve Laboratuvar Yöntemi", 
+            "Doğrudan Öğretim Yöntemi", "Drama", "Eş Zamanlı İpucuyla Öğretim", "Etkinlik Çizelgeleriyle Öğretim", 
+            "Etkinlik Temelli Öğretim", "Fırsat Öğretimi", "Gösterip Yaptırma Tekniği", "Grup Çalışması", "Güç Kartları", 
+            "İpucu Sunma ve Geri Çekme İle Öğretim", "İpucunun Giderek Azaltılmasıyla Öğretim", "Model Olma", "Okuduğunu Anlama", 
+            "Okuma ve Yazma Etkinlikleri", "Oyun", "Örnek Olay Öğretimi", "Problem Çözme Yöntemi", "Proje Yöntemi", 
+            "Replikli Öğretim", "Sabit Bekleme Süreli Öğretim", "Sesletim ve Çözümleme", "Sınıf Dışı Öğretim Yöntemi (İnceleme, Gezi, Gözlem)", 
+            "Soru Cevap Tekniği", "Söyle Yap Yöntemi", "Sözel ve Görsel İpucu", "Tekrarlı Okuma", "Video Modelle Öğretim", 
+            "Yankılı Okuma", "Yanlışsız Öğretim Yöntemi"
+        ];
+        const DEGERLENDIRME_YONTEMLERI = [
+            "Ayrık Deneme Kaydı", "Beceri Analiz Kaydı", "Çoktan Seçmeli Test", "Davranış Kayıt Formu", "Dikte", 
+            "Ev Ödevleri", "Gözlem", "Kendini İzleme Formu", "Kısa Cevaplı Sınav", "Kontrol Listesi", "Öğrenci Gelişim Dosyası", 
+            "Ölçüt Bağımlı Ölçü Aracı", "Sözlü Sınav", "Uygulamalı Sınav", "Yazılı Sınav"
+        ];
+        const ARAC_GERECLER = [
+            "Bilmeceler", "Makara", "Abaküs", "Afiş", "Ahşap Bloklar", "Ahşap Rende", "Akıllı Tahta", "Amiral battı", 
+            "Balon", "Bilgisayar", "Bilye", "Bisiklet", "Boncuk", "Bowling", "Boya", "Boya Kalemi", "Büyüteç", 
+            "CAD/CAM Programı", "Cetvel", "Çalışma Kağıtları", "Çarpım Tablosu", "Çeşitli Sıvılar", "Çit", "Dama", 
+            "Darbuka", "Defter", "Denge Tahtası", "Ders Kitabı", "Ders Modülleri", "Düğme", "Ebru Malzemeleri", 
+            "Elementler Tablosu", "Eş bulma oyunları", "Fırça", "Fon kartonu", "Geometrik Cisimler Seti", "Gönye", 
+            "Güneş Sistemi Maketi", "Günlük Konuşma Diyalogları", "Halat", "Hikaye Kitapları", "Huni", "İğne", 
+            "İletki", "İp", "İplik", "İskelet Modeli", "Jenga", "Jimnastik minderi", "Kakuro", "Kalem", "Kasnak", 
+            "Kaynak Ekipmanları", "Keçe", "Kelime avı", "Kıl Testere", "Kişisel Bakım Ekipmanları", "Kitap", 
+            "Koşu Bandı", "Krokiler, Haritalar", "Kumaş", "Küre", "Makas", "Mangala", "Mantık karesi", "Markalama Aletleri", 
+            "Mekanik ayırma bilmeceleri", "Melodika", "Metal Ritim Kaşıkları", "Mevsim Şeridi", "Mıknatıs", "Mikroskop", 
+            "Mutfak Ekipmanları", "Okuma Metinleri", "Olay Sıralama Kartları", "Onluk Taban Blokları", "Orff Çalgılar", 
+            "Oyun Hamuru", "Örüntü Blokları", "Pergel", "Pipet", "Piyano", "Plates Topu", "Poster", "Raket", 
+            "Renkli Notalar", "Resim hatırlama", "Resimli Kartlar", "Ritim Çubukları", "Satranç", "Sayı Çubukları", 
+            "Scrabble", "Servis Ekipmanları", "Sıralı Kartlar", "Sözcük gruplama", "Sözlük", "Step tahtası", "Sudoku", 
+            "Şifre oyunları", "Şiş", "Tablo ve Grafikler", "Takı Malzemeleri", "Tangram", "Tarih şeridi", "Temizlik Ekipmanları", 
+            "Temrin gereçler", "Tığ", "Top", "Trambolin", "Tutkal", "Üç ampül", "Videolar", "Vücudumuz Maketi", "Yap bozlar", 
+            "Yapıştırıcı", "Yün", "Yürüyüş Bandı"
+        ];
         
-        const mufredat = {
+        // Örnek Müfredat (Kısaltılmış)
+        const MUFREDAT = {
             "1": {
                 "Türkçe": [
-                    { uda: "Dinleme/İzleme Becerileri", kda: ["Doğal ve yapay ses kaynaklarını ayırt eder.", "Dinlediklerinde geçen varlıkları ve olayları tanır.", "Sözlü yönergeleri uygular.", "Dinledikleriyle ilgili sorulara cevap verir.", "Konuşmacıyı sözünü kesmeden dinler."] },
-                    { uda: "Konuşma Becerileri", kda: ["Kendini tanıtır.", "Sınıf içindeki iletişim kurallarına uyar.", "Kelimeleri yerinde ve anlamına uygun kullanır.", "Duygu ve düşüncelerini basit ifadelerle açıklar."] },
-                    { uda: "Okuma Becerileri (İlk Okuma Yazma)", kda: ["Sesi hisseder, tanır ve ayırt eder.", "Harfi tanır ve seslendirir.", "Hecelerden kelime, kelimelerden cümle oluşturur.", "Görsellerden hareketle kelimeleri ve cümleleri okur.", "Kısa metinleri akıcı bir şekilde okur."] },
-                    { uda: "Yazma Becerileri", kda: ["Kalemi tekniğine uygun tutar.", "Harfleri ve rakamları yönüne uygun yazar.", "Büyük ve küçük harfleri kuralına uygun yazar.", "Dikte (söyleneni yazma) çalışması yapar.", "Anlamlı ve kurallı cümleler yazar."] }
+                    { uda: "T.1. Okuma yazma becerilerini geliştirir.", kda: ["Sesi hisseder, tanır ve ayırt eder.", "Harfi okur ve yazar.", "Hece, kelime ve cümle oluşturur."] },
+                    { uda: "T.1. Görsel okuma becerilerini geliştirir.", kda: ["Görsellerden hareketle olayları anlatır.", "Şekil ve sembollerin anlamlarını bilir."] }
                 ],
                 "Matematik": [
-                    { uda: "Sayılar ve Nicelikler", kda: ["20'ye kadar (20 dâhil) birer ritmik sayar.", "Nesne sayılarını belirler ve rakamla yazar.", "Sayıları büyüklük-küçüklük bakımından karşılaştırır.", "Onluk ve birlikleri modelle gösterir.", "Sıra bildiren sayıları (birinci, ikinci vb.) kullanır."] },
-                    { uda: "İşlemler (Toplama ve Çıkarma)", kda: ["Toplamları 20'ye kadar olan doğal sayılarla toplama yapar.", "Toplama işleminin bir araya getirme/artma anlamını kavrar.", "20'ye kadar olan doğal sayılarla çıkarma işlemi yapar.", "Çıkarma işleminin ayırma/azalma anlamını kavrar.", "Zihinden toplama işlemi yapar."] },
-                    { uda: "Nesnelerin Geometrisi", kda: ["Geometrik şekilleri (üçgen, kare, dikdörtgen, çember) tanır.", "Cisimlerin birbirine göre durumlarını (altında, üstünde, sağında, solunda) ifade eder.", "Eş nesneleri eşleştirir."] },
-                    { uda: "Veri ve Ölçme", kda: ["Paralarımızı tanır (1 TL, 5 TL, 10 TL vb.).", "Tam ve yarım saatleri okur.", "Standart olmayan uzunluk ölçme araçları ile ölçüm yapar."] }
-                ],
-                "Hayat Bilgisi": [
-                    { uda: "Okulda Hayat", kda: ["Sınıf ve okul kurallarına uyar.", "Kendini ve fiziksel özelliklerini tanıtır.", "Okulun bölümlerini ve çalışanlarını tanır.", "Bayrağımıza ve İstiklal Marşı'na saygı gösterir."] },
-                    { uda: "Evimizde Hayat", kda: ["Aile bireylerini tanıtır.", "Ev adresini ve telefon numarasını bilir.", "Evdeki kaynakları (su, elektrik) verimli kullanır."] },
-                    { uda: "Sağlıklı Hayat", kda: ["Kişisel bakımını (el yıkama, diş fırçalama) yapar.", "Sağlıklı besinleri seçer.", "Yemek yeme kurallarına (görgü kuralları) uyar."] },
-                    { uda: "Güvenli Hayat", kda: ["Okula geliş gidişlerde trafik kurallarına uyar.", "Tanımadığı kişilerle iletişim kurma konusunda dikkatli olur.", "Acil durum numaralarını bilir."] }
+                    { uda: "M.1. Doğal sayıları tanır.", kda: ["20'ye kadar ritmik sayar.", "Rakamları okur ve yazar.", "Nesne sayısını belirler."] }
                 ]
             },
-            "2": {
-                "Türkçe": [
-                    { uda: "Okuma Kültürü ve Becerisi", kda: ["Metni noktalama işaretlerine dikkat ederek okur.", "Metinle ilgili 5N 1K sorularını cevaplar.", "Metnin ana fikrini/konusunu belirler.", "Şiir ve düzyazıyı ayırt eder.", "Görsellerle metin arasında ilişki kurar."] },
-                    { uda: "Söz Varlığını Geliştirme", kda: ["Eş anlamlı kelimeleri bulur.", "Zıt anlamlı kelimeleri bulur.", "Kelimelerin doğru yazılışını sözlükten bulur."] },
-                    { uda: "Yazılı Anlatım", kda: ["Anlamlı ve kurallı cümleler kurar.", "Olayları oluş sırasına göre yazar.", "Büyük harfleri ve noktalama işaretlerini (nokta, virgül, soru işareti, ünlem) yerinde kullanır.", "Kısa tebrik kartı veya mesaj yazar."] }
-                ],
-                "Matematik": [
-                    { uda: "Sayılar ve Nicelikler", kda: ["100 içinde ileriye ve geriye ritmik sayar.", "İki basamaklı sayıların basamak adlarını ve değerlerini belirtir.", "Sayıları en yakın onluğa yuvarlar.", "Sayı örüntülerini tamamlar."] },
-                    { uda: "İşlemler (Dört İşlem)", kda: ["Eldeli toplama işlemi yapar.", "Onluk bozarak çıkarma işlemi yapar.", "Çarpma işleminin tekrarlı toplama olduğunu kavrar.", "Bölme işleminin gruplara ayırma olduğunu kavrar."] },
-                    { uda: "Nesnelerin Geometrisi", kda: ["Geometrik cisimleri (küp, prizma, silindir, küre) tanır ve sınıflandırır.", "Şekillerin kenar ve köşe sayılarını söyler."] },
-                    { uda: "Ölçme", kda: ["Standart uzunluk ölçme birimlerini (m, cm) tanır.", "Paralarımızla ilgili basit problemleri çözer.", "Zamanı (tam, yarım, çeyrek saat) okur."] }
-                ],
-                "Hayat Bilgisi": [
-                    { uda: "Okul ve Sosyal Yaşam", kda: ["Grup çalışmalarında sorumluluk alır.", "Arkadaşlık ilişkilerinde nezaket kurallarına uyar.", "Okul kaynaklarını tasarruflu kullanır."] },
-                    { uda: "Sağlıklı Büyüme ve Gelişme", kda: ["Mevsimine uygun giyinir.", "Dengeli ve düzenli beslenmenin önemini açıklar.", "Vücut temizliğine özen gösterir."] },
-                    { uda: "Ülkemiz ve Değerlerimiz", kda: ["Harita ve küre üzerinde ülkemizi gösterir.", "Millî bayramlarımızı bilir ve kutlar.", "Yakın çevresindeki kültürel miras ögelerini tanır."] }
-                ]
-            },
-            "3": {
-                "Türkçe": [
-                    { uda: "Anlama (Dinleme/Okuma)", kda: ["Metnin hikâye unsurlarını (yer, zaman, kişi, olay) belirler.", "Gerçek ve hayal ürünü unsurları ayırt eder.", "Metindeki betimlemeleri fark eder.", "Metinle ilgili çıkarımlarda bulunur."] },
-                    { uda: "Söz Varlığı", kda: ["Eş sesli (sesteş) kelimeleri ayırt eder.", "Deyim ve atasözlerinin metne kattığı anlamı fark eder.", "Sözlük ve yazım kılavuzu kullanır."] },
-                    { uda: "Yazılı Anlatım", kda: ["Hikaye edici metin yazar.", "Kısa şiir yazar.", "Yazdıklarını düzenler ve zenginleştirir.", "Yazılarında betimlemeler yapar."] }
-                ],
-                "Matematik": [
-                    { uda: "Sayılar ve İşlemler", kda: ["Üç basamaklı doğal sayıları okur ve yazar.", "1000 içinde ritmik sayar.", "Tek ve çift doğal sayıları ayırt eder.", "Romen rakamlarını tanır."] },
-                    { uda: "Çarpma ve Bölme", kda: ["Çarpım tablosunu ezberler.", "İki basamaklı sayılarla çarpma işlemi yapar.", "Kalanlı ve kalansız bölme işlemi yapar.", "10 ve 100 ile kısa yoldan çarpma yapar."] },
-                    { uda: "Kesirler", kda: ["Birim kesri kavrar ve modellerle gösterir.", "Pay ve payda arasındaki ilişkiyi açıklar."] },
-                    { uda: "Veri, Geometri ve Ölçme", kda: ["Şekillerin köşe ve kenar özelliklerini belirler.", "Çevre uzunluğunu hesaplar.", "Lira ve kuruş ilişkisini kullanarak problem çözer."] }
-                ],
-                "Fen Bilimleri": [
-                    { uda: "Bilimsel Keşif ve Yer Kabuğu", kda: ["Dünya'nın katmanlarını (hava, su, kara) model üzerinde gösterir.", "Duyu organlarının görevlerini ve sağlığını korumayı bilir."] },
-                    { uda: "Maddeyi Tanıyalım", kda: ["Maddenin hâllerini (katı, sıvı, gaz) ayırt eder.", "Maddeyi niteleyen özellikleri (sert/yumuşak, esnek/kırılgan vb.) bilir."] },
-                    { uda: "Canlılar Dünyası", kda: ["Canlı ve cansız varlıkları ayırt eder.", "Bitkilerin yaşam döngüsünü gözlemler.", "Yakın çevresindeki canlıları tanır."] },
-                    { uda: "Hareketi Keşfediyorum", kda: ["Varlıkların hareket özelliklerini (hızlanma, yavaşlama, dönme, sallanma) gözlemler.", "İtme ve çekme kuvvetinin cisimler üzerindeki etkisini açıklar."] }
-                ],
-                "Hayat Bilgisi": [
-                    { uda: "Yönetim ve İnsan", kda: ["Yönetim birimlerini (Muhtarlık, Kaymakamlık vb.) tanır.", "Atatürk'ün hayatını ve kişilik özelliklerini bilir.", "Cumhuriyetin önemini kavrar."] },
-                    { uda: "Doğa ve Çevre", kda: ["Yönleri (ana ve ara yönler) bulur.", "Doğal ve yapay çevreyi ayırt eder.", "Geri dönüşümün çevre için önemini bilir."] }
-                ]
-            },
-            "4": {
-                "Türkçe": [
-                    { uda: "Eleştirel Okuma", kda: ["Metinle ilgili çıkarımlarda bulunur.", "Öznel ve nesnel yargıları ayırt eder.", "Metnin ana fikrini ve yardımcı fikirlerini belirler.", "Metinler arası karşılaştırma yapar."] },
-                    { uda: "Yazma ve Dil Bilgisi", kda: ["Bilgilendirici metin yazar.", "Hikâye edici metin yazar.", "Deyim, atasözü ve özdeyişleri yerinde kullanır.", "Kök ve ek kavramlarını tanır."] }
-                ],
-                "Matematik": [
-                    { uda: "Sayılar ve İşlemler", kda: ["4, 5 ve 6 basamaklı sayıları okur ve yazar.", "Doğal sayılarla toplama ve çıkarma işlemleri yapar.", "Üç basamaklı sayıları iki basamaklı sayılara böler.", "Zihinden işlem stratejilerini kullanır."] },
-                    { uda: "Kesirler", kda: ["Basit, bileşik ve tam sayılı kesirleri tanır.", "Kesirleri sıralar.", "Kesirlerle toplama ve çıkarma işlemi yapar."] },
-                    { uda: "Geometri ve Ölçme", kda: ["Açıları standart açı ölçme araçlarıyla ölçer.", "Üçgen, kare ve dikdörtgenin kenar özelliklerini belirler.", "Sıvı ölçme birimlerini (L, mL) kullanır ve dönüştürür."] },
-                    { uda: "Veri Analizi", kda: ["Sütun grafiği oluşturur ve yorumlar.", "Verileri kullanarak problem çözer."] }
-                ],
-                "Fen Bilimleri": [
-                    { uda: "Yer Kabuğu ve Dünya'mız", kda: ["Yer kabuğunun yapısını ve kayaçları tanır.", "Fosillerin oluşumunu açıklar.", "Dünya'nın dönme ve dolanma hareketlerinin sonuçlarını bilir."] },
-                    { uda: "Besinler ve Sağlık", kda: ["Besin içeriklerini (protein, karbonhidrat, yağ, vitamin) sınıflandırır.", "Dengeli beslenmenin önemini bilir.", "Sigara ve alkolün zararlarını açıklar."] },
-                    { uda: "Madde ve Özellikleri", kda: ["Maddenin ölçülebilir özelliklerini (kütle, hacim) bilir.", "Saf madde ve karışımı ayırt eder.", "Karışımları ayırma yöntemlerini (eleme, süzme, mıknatısla ayırma) uygular."] },
-                    { uda: "Aydınlatma ve Ses Teknolojileri", kda: ["Geçmişten günümüze aydınlatma ve ses teknolojilerini karşılaştırır.", "Işık ve ses kirliliğinin olumsuz etkilerini bilir."] },
-                    { uda: "Basit Elektrik Devreleri", kda: ["Basit elektrik devresi elemanlarını tanır.", "Çalışan bir elektrik devresi kurar."] }
-                ],
-                "Sosyal Bilgiler": [
-                    { uda: "Birlikte Yaşamak (Birey ve Toplum)", kda: ["Kendi kimliğini ve bireysel özelliklerini tanır.", "Farklılıklara saygı duyar.", "Empati kurma becerisi geliştirir."] },
-                    { uda: "Evimiz Dünya (İnsanlar, Yerler ve Çevreler)", kda: ["Kroki çizerek yer tarifi yapar.", "Harita üzerindeki yönleri ve sembolleri kullanır.", "Doğal afetlere karşı alınacak önlemleri bilir."] },
-                    { uda: "Ortak Mirasımız (Kültür ve Miras)", kda: ["Milli Mücadele kahramanlarını tanır.", "Ailesinin ve çevresinin geçmişini araştırır.", "Kültürel ögeleri (yemek, kıyafet, oyun) ayırt eder."] },
-                    { uda: "Hayatımızdaki Ekonomi (Üretim, Dağıtım, Tüketim)", kda: ["İstek ve ihtiyaçlarını ayırt eder.", "Bilinçli tüketici davranışları gösterir.", "Bütçe yapmanın önemini kavrar."] },
-                    { uda: "Teknoloji ve Sosyal Bilimler", kda: ["Teknolojik ürünlerin gelişimini ve hayatımıza etkilerini araştırır.", "Mucitleri ve icatlarını tanır."] }
-                ],
-                "Din Kültürü": [
-                    { uda: "Günlük Hayat ve Din", kda: ["Günlük konuşmalarda geçen dinî ifadeleri (Besmele, Selam, Şükür vb.) tanır.", "Dilek ve dualarda geçen dinî ifadeleri bilir."] },
-                    { uda: "İslam'ı Tanıyalım", kda: ["İslam'ın inanç esaslarını (İmanın Şartları) sayar.", "İslam'ın şartlarını söyler.", "Kelime-i Tevhid ve Kelime-i Şehadet'in anlamını bilir."] },
-                    { uda: "Ahlaki Değerlerimiz", kda: ["Güzel ahlaklı olmanın birey ve toplum için önemini fark eder.", "Dürüstlük, güvenilirlik ve yardımseverlik değerlerini benimser."] }
-                ]
-            }
+            "2": { "Türkçe": [], "Matematik": [], "Hayat Bilgisi": [] },
+            "3": { "Türkçe": [], "Matematik": [], "Fen Bilimleri": [], "Hayat Bilgisi": [] },
+            "4": { "Türkçe": [], "Matematik": [], "Fen Bilimleri": [], "Sosyal Bilgiler": [] }
         };
 
+        // --- GLOBAL DEĞİŞKENLER ---
         let bepPlani = [];
 
-        // --- SAYFA YÜKLENDİĞİNDE ---
+        // --- BAŞLANGIÇ ---
         document.addEventListener('DOMContentLoaded', () => {
-            tarihAta('tam'); // Varsayılan tarih
+            tarihAta('tam');
+            listeleriHazirla();
             veriYukle();
-            dinleyicileriEkle();
         });
-
-        // --- GİRİŞ EKRANI FONKSİYONU ---
+        
+        // --- UYGULAMAYI BAŞLAT ---
         function uygulamayiBaslat() {
             const overlay = document.getElementById('welcomeOverlay');
             overlay.classList.add('opacity-0', 'pointer-events-none', 'scale-110');
-            // DOM'dan silmeye gerek yok, display none yeterli
             setTimeout(() => {
                 overlay.style.display = 'none';
-            }, 700);
+            }, 500);
         }
 
-        // --- HIZLI TARİH ÖZELLİĞİ ---
-        function tarihAta(donem) {
-            const now = new Date();
-            const year = now.getMonth() > 6 ? now.getFullYear() : now.getFullYear() - 1;
-            const nextYear = year + 1;
-            
-            const basEl = document.getElementById('basTarih');
-            const bitEl = document.getElementById('bitTarih');
-
-            if (donem === '1') {
-                basEl.value = `${year}-09-15`;
-                bitEl.value = `${nextYear}-01-20`;
-            } else if (donem === '2') {
-                basEl.value = `${nextYear}-02-05`;
-                bitEl.value = `${nextYear}-06-15`;
-            } else {
-                basEl.value = `${year}-09-15`;
-                bitEl.value = `${nextYear}-06-15`;
+        // --- ACCORDION LOGIC ---
+        function toggleAccordion(id, iconId) {
+            const el = document.getElementById(id);
+            const icon = document.getElementById(iconId);
+            el.classList.toggle('open');
+            if(icon) {
+                icon.style.transform = el.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)';
             }
-            verileriKaydet();
         }
 
-        function dinleyicileriEkle() {
-            document.querySelectorAll('input, textarea, select').forEach(el => {
-                if(el.id !== 'jsonFileInput') {
-                    el.addEventListener('change', verileriKaydet);
-                    el.addEventListener('input', () => {
-                        el.classList.remove('input-error'); // Hatayı sil
-                        verileriKaydet();
-                    });
-                }
+        // --- LİSTE HAZIRLAMA FONKSİYONLARI ---
+        function listeleriHazirla() {
+            createMultiSelectList('yontemDropdown', OGRETIM_YONTEMLERI, 'yontemOzet', ['Anlatım Yöntemi', 'Soru Cevap Tekniği']);
+            createMultiSelectList('aracDropdown', ARAC_GERECLER, 'aracOzet', ['Ders Kitabı', 'Defter']);
+            createMultiSelectList('degerlendirmeDropdown', DEGERLENDIRME_YONTEMLERI, 'degerlendirmeOzet', ['Gözlem Formu', 'Kontrol Listesi']);
+        }
+
+        function createMultiSelectList(containerId, items, summaryId, defaults = []) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            
+            // Arama Kutusu
+            const searchDiv = document.createElement('div');
+            searchDiv.className = "p-2 border-b border-slate-100 sticky top-0 bg-white";
+            searchDiv.innerHTML = `<input type="text" placeholder="Ara..." class="w-full text-xs p-1 border rounded" onkeyup="filterList(this, '${containerId}')">`;
+            container.appendChild(searchDiv);
+
+            // Liste Elemanları
+            items.forEach(item => {
+                const div = document.createElement('div');
+                div.className = "flex items-center px-3 py-2 hover:bg-slate-50 cursor-pointer border-b border-slate-50 last:border-0";
+                const isChecked = defaults.some(def => item.includes(def));
+                div.innerHTML = `
+                    <input type="checkbox" value="${item}" ${isChecked ? 'checked' : ''} onchange="updateSummary('${containerId}', '${summaryId}')" class="w-4 h-4 text-mebBlue rounded border-slate-300 focus:ring-mebBlue mr-2">
+                    <span class="text-xs text-slate-700 select-none" onclick="this.previousElementSibling.click()">${item}</span>
+                `;
+                container.appendChild(div);
+            });
+            updateSummary(containerId, summaryId);
+        }
+
+        function toggleDropdown(id) {
+            const el = document.getElementById(id);
+            // Diğer açık olanları kapat
+            document.querySelectorAll('.multi-select-dropdown.open').forEach(d => {
+                if(d.id !== id) d.classList.remove('open');
+            });
+            el.classList.toggle('open');
+        }
+
+        function filterList(input, containerId) {
+            const filter = input.value.toLowerCase();
+            const container = document.getElementById(containerId);
+            const divs = container.querySelectorAll('div.flex');
+            divs.forEach(div => {
+                const txt = div.innerText.toLowerCase();
+                div.style.display = txt.includes(filter) ? "" : "none";
             });
         }
 
-        function showToast(message) {
-            const toast = document.getElementById('toast');
-            document.getElementById('toastMessage').textContent = message;
-            toast.classList.remove('translate-y-24', 'opacity-0');
-            setTimeout(() => toast.classList.add('translate-y-24', 'opacity-0'), 3000);
-        }
-
-        function toggleManualInput(selectId, inputId) {
-            const selectEl = document.getElementById(selectId);
-            const inputEl = document.getElementById(inputId);
-            if (selectEl.value === 'Diğer') {
-                inputEl.classList.remove('hidden');
-                inputEl.focus();
+        function updateSummary(containerId, summaryId) {
+            const container = document.getElementById(containerId);
+            const checkboxes = container.querySelectorAll('input[type="checkbox"]:checked');
+            const summaryEl = document.getElementById(summaryId);
+            const values = Array.from(checkboxes).map(cb => cb.value);
+            
+            if (values.length === 0) {
+                summaryEl.innerText = "Seçiniz...";
+                summaryEl.classList.add("text-slate-400");
             } else {
-                inputEl.classList.add('hidden');
+                summaryEl.innerText = values.join(", ");
+                summaryEl.classList.remove("text-slate-400");
             }
-            verileriKaydet();
         }
 
+        function getSelectedValues(containerId) {
+            const container = document.getElementById(containerId);
+            return Array.from(container.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.value);
+        }
+
+        // --- FORM İŞLEMLERİ ---
+        function toggleManualInput(selectId, inputId) {
+            const val = document.getElementById(selectId).value;
+            const input = document.getElementById(inputId);
+            if (val === 'Diğer') {
+                input.classList.remove('hidden');
+                input.focus();
+                // Eğer UDA ise KDA manuel alanını da aç
+                if (selectId === 'udaSecimi') {
+                    document.getElementById('kdaListesi').classList.add('hidden');
+                    document.getElementById('tumunuSecContainer').classList.add('hidden');
+                    document.getElementById('kdaManuel').classList.remove('hidden');
+                }
+            } else {
+                input.classList.add('hidden');
+                // Eğer UDA ise KDA listesini geri getir
+                if (selectId === 'udaSecimi') {
+                    document.getElementById('kdaListesi').classList.remove('hidden');
+                    document.getElementById('tumunuSecContainer').classList.remove('hidden');
+                    document.getElementById('kdaManuel').classList.add('hidden');
+                }
+            }
+        }
+
+        function tarihAta(tip) {
+            const now = new Date();
+            const yil = now.getMonth() > 6 ? now.getFullYear() : now.getFullYear() - 1;
+            const basEl = document.getElementById('basTarih');
+            const bitEl = document.getElementById('bitTarih');
+            
+            if (tip === 'tam') {
+                basEl.value = `${yil}-09-15`;
+                bitEl.value = `${yil+1}-06-15`;
+            }
+        }
+
+        // --- DERS VE HEDEF LOGIC ---
         function dersleriGetir() {
             const sinif = document.getElementById('sinifSecimi').value;
             const dersSelect = document.getElementById('dersSecimi');
-            
             dersSelect.innerHTML = '<option value="">Ders Seçiniz...</option>';
-            document.getElementById('udaKutusu').classList.add('hidden');
-            document.getElementById('kdaKutusu').classList.add('hidden');
-            document.getElementById('settingsBox').classList.add('hidden');
-            document.getElementById('bosMesaj').classList.remove('hidden');
             
-            if (sinif && mufredat[sinif]) {
+            // UI Temizliği (Accordion kapama)
+            document.getElementById('udaContainer').classList.remove('open');
+            document.getElementById('detayAyarlari').classList.remove('open');
+            document.getElementById('kdaContainer').classList.remove('open');
+            
+            document.getElementById('bosMesaj').classList.remove('hidden'); // Geri getir ama opacity ile oynayabiliriz
+
+            if (sinif && MUFREDAT[sinif]) {
                 dersSelect.disabled = false;
-                Object.keys(mufredat[sinif]).forEach(ders => {
+                Object.keys(MUFREDAT[sinif]).forEach(ders => {
                     const opt = document.createElement('option');
                     opt.value = ders;
-                    opt.textContent = ders;
+                    opt.text = ders;
                     dersSelect.appendChild(opt);
                 });
             } else {
@@ -678,267 +822,257 @@
         function udalariGetir() {
             const sinif = document.getElementById('sinifSecimi').value;
             const ders = document.getElementById('dersSecimi').value;
+            const udaSelect = document.getElementById('udaSecimi');
             
             if (sinif && ders) {
                 document.getElementById('bosMesaj').classList.add('hidden');
-                document.getElementById('udaKutusu').classList.remove('hidden');
-                document.getElementById('settingsBox').classList.remove('hidden');
-                document.getElementById('kdaKutusu').classList.add('hidden');
-
-                const udaSelect = document.getElementById('udaSecimi');
+                
+                // Yumuşak açılış
+                document.getElementById('udaContainer').classList.add('open');
+                document.getElementById('detayAyarlari').classList.add('open');
+                
                 udaSelect.innerHTML = '<option value="">Hedef seçiniz...</option>';
-
-                const dersData = mufredat[sinif][ders] || [];
-                dersData.forEach((item, index) => {
-                    const opt = document.createElement('option');
-                    opt.value = index; 
-                    opt.textContent = item.uda;
-                    udaSelect.appendChild(opt);
-                });
-
-                const otherOpt = document.createElement('option');
-                otherOpt.value = "Diğer";
-                otherOpt.textContent = "Diğer (Elle Giriniz)";
-                udaSelect.appendChild(otherOpt);
+                // Müfredattan yükle
+                if (MUFREDAT[sinif][ders]) {
+                    MUFREDAT[sinif][ders].forEach((item, index) => {
+                        const opt = document.createElement('option');
+                        opt.value = index;
+                        opt.text = item.uda;
+                        udaSelect.appendChild(opt);
+                    });
+                }
+                // Manuel seçenek
+                const manuelOpt = document.createElement('option');
+                manuelOpt.value = "Diğer";
+                manuelOpt.text = "Diğer (Elle Giriniz)";
+                udaSelect.appendChild(manuelOpt);
             }
         }
 
         function kdalariGetir() {
+            const val = document.getElementById('udaSecimi').value;
+            const kdaContainer = document.getElementById('kdaContainer');
+            
+            if (val === "") {
+                kdaContainer.classList.remove('open');
+                return;
+            }
+
+            kdaContainer.classList.add('open');
+            
+            // Manuel Giriş Kontrolü
+            if (val === "Diğer") {
+                toggleManualInput('udaSecimi', 'udaManuel');
+                return; 
+            } else {
+                toggleManualInput('udaSecimi', 'udaManuel'); // Kapatır
+            }
+
             const sinif = document.getElementById('sinifSecimi').value;
             const ders = document.getElementById('dersSecimi').value;
-            const udaIndex = document.getElementById('udaSecimi').value;
-            const udaManuel = document.getElementById('udaManuel');
+            const kdaListesi = document.getElementById('kdaListesi');
+            
+            kdaListesi.innerHTML = '';
+            document.getElementById('tumunuSec').checked = false;
 
-            if (udaIndex === "Diğer") {
-                udaManuel.classList.remove('hidden');
-                udaManuel.focus();
-                document.getElementById('kdaKutusu').classList.remove('hidden');
-                document.getElementById('checkboxListesi').innerHTML = '<div class="text-xs text-slate-500 p-2 italic">Manuel UDA girişi için standart kazanım listesi sunulmaz. BEP\'e ekledikten sonra çıktıda düzenleyebilirsiniz.</div>';
-                return;
-            } else {
-                udaManuel.classList.add('hidden');
-            }
-
-            if (udaIndex !== "") {
-                document.getElementById('kdaKutusu').classList.remove('hidden');
-                const kdaList = mufredat[sinif][ders][udaIndex].kda;
-                const listeDiv = document.getElementById('checkboxListesi');
-                listeDiv.innerHTML = '';
-                document.getElementById('selectAllKda').checked = false;
-
-                kdaList.forEach((kda) => {
-                    const wrapper = document.createElement('label');
-                    wrapper.className = "flex items-start gap-2 cursor-pointer group px-2 py-1 hover:bg-white";
-                    wrapper.innerHTML = `
-                        <input type="checkbox" value="${kda}" class="checkbox-wrapper w-4 h-4 mt-0.5 rounded border-gray-300 text-red-600 focus:ring-red-500">
-                        <span class="text-sm text-slate-700 group-hover:text-black transition select-none leading-tight">${kda}</span>
-                    `;
-                    listeDiv.appendChild(wrapper);
-                });
-            } else {
-                document.getElementById('kdaKutusu').classList.add('hidden');
-            }
+            const kazanimlar = MUFREDAT[sinif][ders][val].kda;
+            kazanimlar.forEach(kda => {
+                const div = document.createElement('div');
+                div.className = "flex items-start p-1 hover:bg-white rounded";
+                div.innerHTML = `
+                    <input type="checkbox" value="${kda}" class="checkbox-wrapper w-4 h-4 mt-1 text-mebRed rounded border-slate-300 focus:ring-mebRed mr-2">
+                    <span class="text-xs text-slate-700 cursor-pointer" onclick="this.previousElementSibling.click()">${kda}</span>
+                `;
+                kdaListesi.appendChild(div);
+            });
         }
 
-        function tumunuSec() {
-            const selectAllBox = document.getElementById('selectAllKda');
-            const checkboxes = document.querySelectorAll('#checkboxListesi input[type="checkbox"]');
-            checkboxes.forEach(cb => cb.checked = selectAllBox.checked);
+        function tumKdaSec() {
+            const chk = document.getElementById('tumunuSec').checked;
+            document.querySelectorAll('#kdaListesi input[type="checkbox"]').forEach(cb => cb.checked = chk);
         }
 
-        function amaclariEkle() {
+        // --- PLAN EKLEME VE YÖNETME ---
+        function planaEkle() {
+            // Validasyon
             const sinif = document.getElementById('sinifSecimi').value;
             const ders = document.getElementById('dersSecimi').value;
             const udaSelect = document.getElementById('udaSecimi');
-            let udaText = (udaSelect.value === "Diğer") ? document.getElementById('udaManuel').value : udaSelect.options[udaSelect.selectedIndex].text;
+            let udaText = "";
+            let kdaList = [];
 
-            if (!udaText) { alert("Lütfen bir Uzun Dönemli Amaç seçin."); return; }
-
-            const yontem = document.getElementById('yontemSecimi').value;
-            const arac = document.getElementById('aracSecimi').value;
-            const degerlendirme = document.getElementById('degerlendirmeSecimi').value;
-            
-            const seciliKda = [];
-            document.querySelectorAll('#checkboxListesi input:checked').forEach(c => seciliKda.push(c.value));
-
-            if (udaSelect.value !== "Diğer" && seciliKda.length === 0) {
-                alert("Lütfen en az bir kazanım seçiniz."); return;
+            if (!sinif || !ders || !udaSelect.value) {
+                showToast("Lütfen tüm alanları seçiniz.");
+                return;
             }
 
-            const yeniPlan = {
+            // UDA Belirleme
+            if (udaSelect.value === "Diğer") {
+                udaText = document.getElementById('udaManuel').value.trim();
+                const manuelKdaText = document.getElementById('kdaManuel').value.trim();
+                if (!udaText) { showToast("Lütfen hedef yazınız."); return; }
+                if (manuelKdaText) {
+                    kdaList = manuelKdaText.split('\n').filter(line => line.trim() !== "");
+                }
+            } else {
+                udaText = udaSelect.options[udaSelect.selectedIndex].text;
+                document.querySelectorAll('#kdaListesi input:checked').forEach(cb => kdaList.push(cb.value));
+            }
+
+            if (kdaList.length === 0) {
+                showToast("En az bir kazanım (KDA) belirlemelisiniz.");
+                return;
+            }
+            
+            // --- DUPLICATE UDA KONTROLÜ (YENİ) ---
+            const mevcut = bepPlani.find(p => p.ders === ders && p.uda === udaText);
+            if (mevcut) {
+                alert(`Bu ders için "${udaText}" hedefi zaten eklenmiş. Lütfen farklı bir hedef seçiniz.`);
+                return;
+            }
+
+            // Ayarları al
+            const yontemler = getSelectedValues('yontemDropdown');
+            const araclar = getSelectedValues('aracDropdown');
+            const degerlendirme = getSelectedValues('degerlendirmeDropdown');
+            const olcut = document.getElementById('olcutSecimi').value;
+
+            // Objeyi oluştur
+            const planItem = {
                 id: Date.now(),
-                sinif, ders, uda: udaText, yontem, arac, degerlendirme, kdaList: seciliKda
+                sinif,
+                ders,
+                uda: udaText,
+                kdaList,
+                yontemler: yontemler.length > 0 ? yontemler : ["Anlatım", "Soru-Cevap"],
+                araclar: araclar.length > 0 ? araclar : ["Ders Kitabı"],
+                degerlendirme: degerlendirme.length > 0 ? degerlendirme : ["Gözlem Formu"],
+                olcut
             };
 
-            bepPlani.push(yeniPlan);
+            bepPlani.push(planItem);
             planiGuncelle();
             verileriKaydet();
-            showToast("Amaç plana eklendi.");
+            showToast("Hedef plana eklendi!");
         }
 
         function planiGuncelle() {
             const liste = document.getElementById('planListesi');
+            const sayac = document.getElementById('hedefSayisi');
             const istatistikKutusu = document.getElementById('istatistikKutusu');
-            document.getElementById('toplamAmacRozeti').textContent = bepPlani.length;
+            sayac.innerText = bepPlani.length;
             
-            // İstatistik Hesapla
+            // İstatistikleri Hesapla
             const istatistik = {};
-            bepPlani.forEach(p => {
-                istatistik[p.ders] = (istatistik[p.ders] || 0) + 1;
-            });
+            bepPlani.forEach(p => istatistik[p.ders] = (istatistik[p.ders] || 0) + 1);
 
-            // İstatistik Göster
+            // İstatistik Kutusunu Güncelle
             if (Object.keys(istatistik).length > 0) {
                 istatistikKutusu.innerHTML = '';
                 Object.keys(istatistik).forEach(ders => {
                     const row = document.createElement('div');
-                    row.className = "flex justify-between items-center border-b border-slate-200 pb-1";
-                    row.innerHTML = `<span class="text-slate-600">${ders}</span> <span class="font-bold text-mebBlue">${istatistik[ders]} Hedef</span>`;
+                    row.className = "flex justify-between border-b pb-1 last:border-0";
+                    row.innerHTML = `<span>${ders}</span> <span class="font-bold text-mebBlue">${istatistik[ders]} Hedef</span>`;
                     istatistikKutusu.appendChild(row);
                 });
             } else {
                 istatistikKutusu.innerHTML = '<div class="text-slate-400 italic">Veri yok.</div>';
             }
 
-            // Listeyi Güncelle
             if (bepPlani.length === 0) {
-                liste.innerHTML = '<div class="text-center py-8 text-slate-400 text-sm italic">Henüz plan oluşturulmadı.</div>';
+                liste.innerHTML = '<div class="text-center py-8 text-slate-400 text-xs italic">Henüz hedef eklenmedi.</div>';
                 return;
             }
 
             liste.innerHTML = '';
-            bepPlani.forEach((item) => {
+            bepPlani.forEach(item => {
                 const div = document.createElement('div');
-                div.className = "bg-white border border-slate-200 rounded-lg p-3 mb-2 shadow-sm relative group";
+                div.className = "bg-white border border-slate-200 rounded-lg p-3 shadow-sm hover:shadow-md transition group relative";
                 div.innerHTML = `
                     <div class="flex justify-between items-start mb-1">
-                        <h4 class="font-bold text-mebRed text-sm">${item.ders} <span class="text-xs text-slate-400 font-normal">(${item.sinif}. Sınıf)</span></h4>
-                        <button onclick="planiSil(${item.id})" class="text-slate-400 hover:text-red-500 transition"><i class="fas fa-times"></i></button>
+                        <span class="inline-block px-2 py-0.5 bg-blue-50 text-blue-700 text-[10px] font-bold rounded">${item.ders}</span>
+                        <div class="flex gap-2">
+                             <button onclick="planiDuzenle(${item.id})" class="text-slate-400 hover:text-blue-600 text-xs" title="Düzenle"><i class="fas fa-edit"></i></button>
+                             <button onclick="planiSil(${item.id})" class="text-slate-400 hover:text-red-600 text-xs" title="Sil"><i class="fas fa-trash"></i></button>
+                        </div>
                     </div>
-                    <p class="text-xs text-slate-600 mb-2 font-semibold" title="${item.uda}">UDA: ${item.uda}</p>
-                    <ul class="text-[10px] text-slate-500 list-disc list-inside bg-slate-50 p-1 rounded">
-                        ${item.kdaList.map(k => `<li class="truncate">${k}</li>`).join('')}
-                    </ul>
+                    <p class="text-xs font-bold text-slate-700 mb-1 line-clamp-2">${item.uda}</p>
+                    <p class="text-[10px] text-slate-500">${item.kdaList.length} adet kazanım</p>
                 `;
                 liste.appendChild(div);
             });
         }
 
         function planiSil(id) {
+            if(confirm("Bu hedefi silmek istediğinize emin misiniz?")) {
+                bepPlani = bepPlani.filter(p => p.id !== id);
+                planiGuncelle();
+                verileriKaydet();
+            }
+        }
+
+        function planiDuzenle(id) {
+            const item = bepPlani.find(p => p.id === id);
+            if (!item) return;
+
+            // Formu doldur
+            document.getElementById('sinifSecimi').value = item.sinif;
+            dersleriGetir(); // Dersleri yükle
+            document.getElementById('dersSecimi').value = item.ders;
+            udalariGetir(); // Hedefleri yükle
+
+            // UDA'yı bulmaya çalış
+            const udaSelect = document.getElementById('udaSecimi');
+            let found = false;
+            for(let i=0; i<udaSelect.options.length; i++) {
+                if (udaSelect.options[i].text === item.uda) {
+                    udaSelect.selectedIndex = i;
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                udaSelect.value = "Diğer";
+                toggleManualInput('udaSecimi', 'udaManuel');
+                document.getElementById('udaManuel').value = item.uda;
+                // Manuel KDA'ları yükle
+                document.getElementById('kdaManuel').value = item.kdaList.join('\n');
+            } else {
+                kdalariGetir();
+                // Checkboxları işaretle
+                setTimeout(() => {
+                    item.kdaList.forEach(kda => {
+                        const cb = document.querySelector(`#kdaListesi input[value="${kda}"]`);
+                        if(cb) cb.checked = true;
+                    });
+                }, 100);
+            }
+
+            // Seçim listelerini ayarla (Basitçe yeniden oluşturarak)
+            createMultiSelectList('yontemDropdown', OGRETIM_YONTEMLERI, 'yontemOzet', item.yontemler);
+            createMultiSelectList('aracDropdown', ARAC_GERECLER, 'aracOzet', item.araclar);
+            createMultiSelectList('degerlendirmeDropdown', DEGERLENDIRME_YONTEMLERI, 'degerlendirmeOzet', item.degerlendirme);
+            document.getElementById('olcutSecimi').value = item.olcut;
+
+            // Listeden sil
             bepPlani = bepPlani.filter(p => p.id !== id);
             planiGuncelle();
-            verileriKaydet();
+            showToast("Hedef düzenleme için yüklendi.");
         }
 
-        // --- YENİLENMİŞ AKILLI PERFORMANS OLUŞTURUCU ---
-        function otomatikPerformansOlustur() {
-            if (bepPlani.length === 0) {
-                alert("Lütfen önce plana amaç ekleyiniz.");
-                return;
-            }
-            
-            const ogrAd = document.getElementById('ogrAd').value || "Öğrenci";
-            let taslakMetin = `Yapılan eğitsel tanılama ve kaba değerlendirme sonuçlarına göre; ${ogrAd} aşağıdaki alanlarda desteğe ihtiyaç duymaktadır:\n\n`;
-
-            const dersGruplari = {};
-            bepPlani.forEach(p => {
-                if (!dersGruplari[p.ders]) dersGruplari[p.ders] = [];
-                dersGruplari[p.ders].push(p);
-            });
-
-            Object.keys(dersGruplari).forEach(ders => {
-                taslakMetin += `[${ders}]: `;
-                const planlar = dersGruplari[ders];
-                
-                // İlk UDA'yı al
-                const anaEksiklik = planlar[0].uda.replace('geliştirir', 'geliştirmede').replace('yapar', 'yapmada').replace('kavrar', 'kavramada').replace('bilir', 'bilmede').replace('tanır', 'tanımada').replace('uygular', 'uygulamada');
-                
-                taslakMetin += `${anaEksiklik} sınırlılık yaşamaktadır. `;
-                
-                // Detaylı eksiklik (KDA'lardan)
-                if (planlar[0].kdaList.length > 0) {
-                    const kdaOrnek = planlar[0].kdaList.slice(0, 2).join(', ').toLowerCase();
-                    taslakMetin += `Özellikle ${kdaOrnek} konularında akademik desteğe ihtiyacı vardır. `;
-                }
-                
-                taslakMetin += `Bu nedenle ${ders} dersinde bu becerilerin kazandırılması hedeflenmiştir.\n\n`;
-            });
-
-            taslakMetin += "Genel olarak; yönerge verildiğinde, model olunduğunda ve pekiştireç kullanıldığında etkinliklere katılımı artmaktadır.";
-
-            const perfArea = document.getElementById('ogrPerf');
-            if (perfArea.value !== "") {
-                if(confirm("Mevcut performans metnini değiştirmek istiyor musunuz?")) {
-                    perfArea.value = taslakMetin;
-                }
-            } else {
-                perfArea.value = taslakMetin;
-            }
-            verileriKaydet();
-            showToast("Performans yazısı oluşturuldu.");
-        }
-
-        function performansKopyala() {
-            const text = document.getElementById('ogrPerf').value;
-            navigator.clipboard.writeText(text).then(() => {
-                showToast("Metin kopyalandı!");
-            });
-        }
-
-        // --- YEDEKLEME VE YÜKLEME ---
-        function verileriYedekle() {
-            verileriKaydet();
-            const dataStr = localStorage.getItem('bepAsistaniDataV7');
-            if(!dataStr) { alert("Kaydedilecek veri yok."); return; }
-            
-            // Öğrenci Adını Al ve Temizle
-            let ogrenciAdi = document.getElementById('ogrAd').value || "Ogrenci";
-            ogrenciAdi = ogrenciAdi.trim().replace(/[^a-zA-Z0-9çğıöşüÇĞİÖŞÜ ]/g, "").replace(/\s+/g, "_");
-            
-            const blob = new Blob([dataStr], {type: "application/json"});
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            const date = new Date().toISOString().slice(0,10);
-            
-            a.href = url;
-            a.download = `BEP_Yedek_${ogrenciAdi}_${date}.json`;
-            a.click();
-            URL.revokeObjectURL(url);
-            showToast("Yedek dosyası indirildi.");
-        }
-
-        function dosyadanYukle(input) {
-            const file = input.files[0];
-            if (!file) return;
-            
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    const data = JSON.parse(e.target.result);
-                    verileriFormaYukle(data);
-                    verileriKaydet(); // LocalStorage'ı da güncelle
-                    showToast("Yedek başarıyla yüklendi!");
-                } catch(err) {
-                    alert("Hatalı dosya formatı!");
-                }
-            };
-            reader.readAsText(file);
-            input.value = ''; // Reset input
-        }
-
-        // --- KAYIT YÖNETİMİ ---
+        // --- VERİ YÖNETİMİ ---
         function verileriKaydet() {
             const data = {
-                okul: document.getElementById('okulAd').value,
-                ogr: {
+                ogrenci: {
+                    okul: document.getElementById('okulAd').value,
                     ad: document.getElementById('ogrAd').value,
-                    no: document.getElementById('ogrNo').value,
                     sinif: document.getElementById('ogrSinif').value,
+                    no: document.getElementById('ogrNo').value,
                     tani: document.getElementById('taniSecimi').value,
                     taniManuel: document.getElementById('taniManuel').value,
-                    bas: document.getElementById('basTarih').value,
-                    bit: document.getElementById('bitTarih').value,
-                    perf: document.getElementById('ogrPerf').value
+                    basTarih: document.getElementById('basTarih').value,
+                    bitTarih: document.getElementById('bitTarih').value,
+                    performans: document.getElementById('ogrPerf').value
                 },
                 kurul: {
                     mudur: document.getElementById('mudurAd').value,
@@ -948,179 +1082,288 @@
                 },
                 plan: bepPlani
             };
-            localStorage.setItem('bepAsistaniDataV7', JSON.stringify(data));
+            localStorage.setItem('bepDataV8', JSON.stringify(data));
         }
 
         function veriYukle() {
-            const kayitli = localStorage.getItem('bepAsistaniDataV7');
-            if (kayitli) verileriFormaYukle(JSON.parse(kayitli));
-        }
-
-        function verileriFormaYukle(data) {
-            if(data.okul) document.getElementById('okulAd').value = data.okul || "";
-            if(data.ogr) {
-                document.getElementById('ogrAd').value = data.ogr.ad || "";
-                document.getElementById('ogrNo').value = data.ogr.no || "";
-                document.getElementById('ogrSinif').value = data.ogr.sinif || "";
-                document.getElementById('basTarih').value = data.ogr.bas || "";
-                document.getElementById('bitTarih').value = data.ogr.bit || "";
-                document.getElementById('ogrPerf').value = data.ogr.perf || "";
-                
-                const taniSelect = document.getElementById('taniSecimi');
-                const taniManuel = document.getElementById('taniManuel');
-                if (data.ogr.tani) {
-                    taniSelect.value = data.ogr.tani;
-                    if (data.ogr.tani === "Diğer") {
-                        taniManuel.value = data.ogr.taniManuel;
-                        taniManuel.classList.remove('hidden');
-                    }
+            const dataStr = localStorage.getItem('bepDataV8');
+            if (!dataStr) return;
+            try {
+                const data = JSON.parse(dataStr);
+                document.getElementById('okulAd').value = data.ogrenci.okul || "";
+                document.getElementById('ogrAd').value = data.ogrenci.ad || "";
+                document.getElementById('ogrSinif').value = data.ogrenci.sinif || "";
+                document.getElementById('ogrNo').value = data.ogrenci.no || "";
+                document.getElementById('taniSecimi').value = data.ogrenci.tani || "";
+                if (data.ogrenci.tani === "Diğer") {
+                    toggleManualInput('taniSecimi', 'taniManuel');
+                    document.getElementById('taniManuel').value = data.ogrenci.taniManuel || "";
                 }
-            }
-            if(data.kurul) {
+                document.getElementById('basTarih').value = data.ogrenci.basTarih || "";
+                document.getElementById('bitTarih').value = data.ogrenci.bitTarih || "";
+                document.getElementById('ogrPerf').value = data.ogrenci.performans || "";
+                
                 document.getElementById('mudurAd').value = data.kurul.mudur || "";
                 document.getElementById('rehberAd').value = data.kurul.rehber || "";
                 document.getElementById('sinifOgretmenAd').value = data.kurul.sinifOgr || "";
                 document.getElementById('veliAd').value = data.kurul.veli || "";
-            }
-            if(data.plan) {
-                bepPlani = data.plan;
+
+                bepPlani = data.plan || [];
                 planiGuncelle();
+            } catch (e) {
+                console.error("Veri yükleme hatası", e);
             }
         }
 
         function verileriTemizle() {
-            if(confirm("Tüm plan ve öğrenci bilgileri silinecek. Emin misiniz?")) {
-                localStorage.removeItem('bepAsistaniDataV7');
-                location.reload();
+            if(confirm("Tüm veriler silinecek ve sayfa yenilenecek. Onaylıyor musunuz?")) {
+                localStorage.removeItem('bepDataV8');
+                window.location.reload();
             }
         }
 
-        // --- DOĞRULAMA VE YAZDIRMA ---
-        function onizlemeAc() {
-            // Zorunlu alan kontrolü
-            const requiredIds = ['okulAd', 'ogrAd', 'ogrSinif', 'taniSecimi', 'mudurAd', 'rehberAd', 'sinifOgretmenAd', 'veliAd'];
+        function verileriYedekle() {
+            verileriKaydet();
+            const dataStr = localStorage.getItem('bepDataV8');
+            const blob = new Blob([dataStr], {type: "application/json"});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `BEP_${document.getElementById('ogrAd').value || 'Ogrenci'}_${new Date().toLocaleDateString('tr-TR')}.json`;
+            a.click();
+        }
+
+        function dosyadanYukle(input) {
+            const file = input.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                localStorage.setItem('bepDataV8', e.target.result);
+                veriYukle();
+                showToast("Yedek başarıyla yüklendi.");
+            };
+            reader.readAsText(file);
+        }
+
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            document.getElementById('toastMessage').innerText = msg;
+            t.classList.remove('-translate-y-24', 'opacity-0');
+            setTimeout(() => {
+                t.classList.add('-translate-y-24', 'opacity-0');
+            }, 3000);
+        }
+
+        // --- OTOMATİK İŞLEMLER ---
+        function otomatikPerformansOlustur() {
+            if (bepPlani.length === 0) { showToast("Önce hedef ekleyiniz."); return; }
+            const ad = titleCase(document.getElementById('ogrAd').value) || "Öğrenci";
+            let metin = `Öğrencimiz ${ad} ile yapılan kaba değerlendirme çalışmaları ve sınıf içi gözlemler neticesinde;\n\n`;
+            
+            // Dersleri grupla
+            const gruplar = {};
+            bepPlani.forEach(p => {
+                if(!gruplar[p.ders]) gruplar[p.ders] = [];
+                gruplar[p.ders].push(p);
+            });
+
+            Object.keys(gruplar).forEach(ders => {
+                const planlar = gruplar[ders];
+                const udaListesi = planlar.map(p => p.uda.replace(/^[A-Z]\.\d+\.\s*/, '').trim()).join(', ');
+                
+                metin += `${ders} dersinde, özellikle "${udaListesi}" konularında akademik ve işlevsel desteğe ihtiyaç duyduğu tespit edilmiştir.\n`;
+                metin += `Bu bağlamda, öğrencinin bireysel gelişim hızı ve öğrenme stili dikkate alınarak hazırlanan bu planda, ${ders} dersi için toplam ${planlar.reduce((acc, curr) => acc + curr.kdaList.length, 0)} adet kazanım üzerine yoğunlaşılması hedeflenmiştir.\n\n`;
+            });
+            
+            document.getElementById('ogrPerf').value = metin;
+        }
+
+        // --- YAZDIRMA MANTIĞI ---
+        function titleCase(str) {
+            if (!str) return "";
+            return str.toLocaleLowerCase('tr-TR').split(' ').map(word => word.charAt(0).toLocaleUpperCase('tr-TR') + word.slice(1)).join(' ');
+        }
+        
+        function formatSinif(str) {
+            if (!str) return "";
+            return str.replace(/^(\d+)\s*[-/]?\s*([a-zA-Z])$/, (match, p1, p2) => {
+                return `${p1}/${p2.toLocaleUpperCase('tr-TR')}`;
+            });
+        }
+        
+        function tarihFormatla(tarihStr) {
+            if (!tarihStr) return "...../...../..........";
+            const d = new Date(tarihStr);
+            return `${d.getDate().toString().padStart(2, '0')}/${(d.getMonth()+1).toString().padStart(2, '0')}/${d.getFullYear()}`;
+        }
+
+        // --- ZORUNLU ALAN KONTROLÜ (YENİ) ---
+        function tamamlaVeYazdirKontrol() {
+            if (bepPlani.length === 0) { alert("Lütfen en az bir hedef ekleyin."); return; }
+            
+            // Zorunlu alanları kontrol et
+            const requiredIds = ['okulAd', 'ogrAd', 'ogrSinif', 'taniSecimi', 'mudurAd', 'rehberAd', 'sinifOgretmenAd', 'veliAd']; // ogrNo çıkarıldı
             let hasError = false;
-            let firstErrorEl = null;
+            
+            // Önceki hataları temizle
+            document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
 
             requiredIds.forEach(id => {
                 const el = document.getElementById(id);
                 if (!el.value.trim()) {
                     el.classList.add('input-error');
                     hasError = true;
-                    if (!firstErrorEl) firstErrorEl = el;
-                } else {
-                    el.classList.remove('input-error');
+                    // Eğer kurul üyelerindeyse accordion'u aç
+                    if(['mudurAd', 'rehberAd', 'sinifOgretmenAd', 'veliAd'].includes(id)) {
+                        const kurulBody = document.getElementById('kurulBody');
+                        if (!kurulBody.classList.contains('open')) {
+                            toggleAccordion('kurulBody', 'kurulIcon');
+                        }
+                    }
                 }
             });
 
             if (hasError) {
-                firstErrorEl.focus();
-                firstErrorEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                alert("Lütfen zorunlu alanları doldurunuz (Kırmızı ile işaretlendi).");
+                showToast("Lütfen zorunlu alanları doldurunuz.");
+                // İlk hatalı elemana scroll
+                const firstError = document.querySelector('.input-error');
+                if(firstError) firstError.scrollIntoView({behavior: 'smooth', block: 'center'});
                 return;
             }
 
-            if(bepPlani.length === 0) {
-                alert("Yazdırmadan önce lütfen en az bir ders ekleyiniz."); return;
+            const perf = document.getElementById('ogrPerf').value.trim();
+            if (!perf) {
+                if(confirm("Eğitsel Performans alanı boş. Seçtiğiniz hedeflere göre otomatik doldurulmasını ister misiniz?")) {
+                    otomatikPerformansOlustur();
+                    verileriKaydet(); // Kaydet ki yazdırırken görünsün
+                }
             }
-            window.print();
+            
+            yazdirmaOnizlemeHazirla();
+            setTimeout(() => window.print(), 500);
         }
 
-        // --- YAZDIRMA İÇERİĞİ ---
-        window.onbeforeprint = function() {
-            document.getElementById('p_okulBaslik').textContent = "T.C. MİLLİ EĞİTİM BAKANLIĞI\n" + (document.getElementById('okulAd').value.toUpperCase() || "Okul Adı Yok") + " MÜDÜRLÜĞÜ";
-            document.getElementById('p_ad').textContent = document.getElementById('ogrAd').value;
-            document.getElementById('p_no').textContent = document.getElementById('ogrNo').value;
-            document.getElementById('p_sinif').textContent = document.getElementById('ogrSinif').value;
-            
-            const tSecim = document.getElementById('taniSecimi').value;
-            document.getElementById('p_tani').textContent = (tSecim === 'Diğer') ? document.getElementById('taniManuel').value : tSecim;
+        function yazdirmaOnizlemeHazirla() {
+            const printArea = document.getElementById('printArea');
+            printArea.innerHTML = '';
 
-            document.getElementById('p_tarih').textContent = 
-                (document.getElementById('basTarih').value || "...") + " / " + (document.getElementById('bitTarih').value || "...");
-            
-            document.getElementById('p_perf').textContent = document.getElementById('ogrPerf').value || "Belirtilmemiş.";
+            // Verileri Al ve Formatla
+            const okul = titleCase(document.getElementById('okulAd').value) || ".......................................................";
+            const ogrAd = titleCase(document.getElementById('ogrAd').value);
+            const ogrNo = document.getElementById('ogrNo').value;
+            const sinif = formatSinif(document.getElementById('ogrSinif').value) || document.getElementById('ogrSinif').value;
+            const tani = (document.getElementById('taniSecimi').value === 'Diğer') ? titleCase(document.getElementById('taniManuel').value) : document.getElementById('taniSecimi').value;
+            const tarihAraligi = `${tarihFormatla(document.getElementById('basTarih').value)} - ${tarihFormatla(document.getElementById('bitTarih').value)}`;
+            const performans = document.getElementById('ogrPerf').value;
 
-            document.getElementById('p_mudur').textContent = document.getElementById('mudurAd').value;
-            document.getElementById('p_rehber').textContent = document.getElementById('rehberAd').value;
-            document.getElementById('p_sinifOgr').textContent = document.getElementById('sinifOgretmenAd').value;
-            document.getElementById('p_veli').textContent = document.getElementById('veliAd').value;
+            // İmza İsimleri
+            const mudur = titleCase(document.getElementById('mudurAd').value);
+            const rehber = titleCase(document.getElementById('rehberAd').value);
+            const sinifOgr = titleCase(document.getElementById('sinifOgretmenAd').value);
+            const veli = titleCase(document.getElementById('veliAd').value);
 
-            const container = document.getElementById('p_dersler');
-            container.innerHTML = '';
+            // Dersleri Grupla (Her ders ayrı sayfa)
+            const dersGruplari = {};
+            bepPlani.forEach(p => {
+                if(!dersGruplari[p.ders]) dersGruplari[p.ders] = [];
+                dersGruplari[p.ders].push(p);
+            });
 
-            bepPlani.forEach(item => {
-                const table = document.createElement('table');
-                table.style.width = "100%";
-                table.style.border = "1px solid black";
-                table.style.marginBottom = "20px";
-                table.style.pageBreakInside = "avoid";
+            // Her ders grubu için sayfa oluştur
+            Object.keys(dersGruplari).forEach((ders, index) => {
+                const planlar = dersGruplari[ders];
+                const pageDiv = document.createElement('div');
+                pageDiv.className = "bep-page-container page-break relative";
+                
+                let htmlContent = `
+                    <div class="header-section">
+                        <div class="header-main">T.C. MİLLİ EĞİTİM BAKANLIĞI</div>
+                        <div class="header-main">${okul.toUpperCase()} MÜDÜRLÜĞÜ</div>
+                        <div class="header-sub">BİREYSELLEŞTİRİLMİŞ EĞİTİM PROGRAMI (BEP)</div>
+                        <div class="header-lesson">${ders.toUpperCase()} DERSİ</div>
+                    </div>
 
-                let kdaListHtml = '<ul style="margin: 0; padding-left: 20px;">';
-                item.kdaList.forEach(k => kdaListHtml += `<li>${k}</li>`);
-                kdaListHtml += '</ul>';
+                    <table class="info-table">
+                        <tr>
+                            <th>ÖĞRENCİ ADI</th><td>${ogrAd}</td>
+                            <th>SINIF - NO</th><td>${sinif} - ${ogrNo}</td>
+                        </tr>
+                        <tr>
+                            <th>EĞİTSEL TANI</th><td>${tani}</td>
+                            <th>TARİH ARALIĞI</th><td>${tarihAraligi}</td>
+                        </tr>
+                    </table>
 
-                table.innerHTML = `
-                    <tr><th colspan="4" style="background: #e0e0e0; text-align: center; padding: 8px; font-size: 11pt; border-bottom: 2px solid black;">${item.ders} (${item.sinif}. Sınıf)</th></tr>
-                    <tr><td colspan="1" style="width: 25%; font-weight: bold; background: #f9f9f9; vertical-align: middle;">Uzun Dönemli Amaç<br>(Yıllık Hedef)</td><td colspan="3" style="font-weight: bold;">${item.uda}</td></tr>
-                    <tr><td colspan="1" style="font-weight: bold; background: #f9f9f9; vertical-align: top;">Kısa Dönemli Amaçlar<br>(Kazanımlar)</td><td colspan="3" style="vertical-align: top;">${kdaListHtml}</td></tr>
-                    <tr>
-                        <td style="width: 25%; font-weight: bold; background: #f9f9f9;">Öğretim Yöntemleri</td><td style="width: 25%;">${item.yontem}</td>
-                        <td style="width: 25%; font-weight: bold; background: #f9f9f9;">Eğitim Araçları</td><td style="width: 25%;">${item.arac}</td>
-                    </tr>
-                    <tr><td style="font-weight: bold; background: #f9f9f9;">Değerlendirme Yöntemi</td><td colspan="3">${item.degerlendirme}</td></tr>
+                    <div class="perf-box">
+                        <div class="perf-header">EĞİTSEL PERFORMANS</div>
+                        <div class="perf-content">${performans}</div>
+                    </div>
+
+                    <table class="goals-table">
+                        <thead>
+                            <tr>
+                                <th width="25%">UZUN DÖNEMLİ AMAÇLAR</th>
+                                <th width="40%">KISA DÖNEMLİ AMAÇLAR (KAZANIMLAR)</th>
+                                <th width="35%">YÖNTEM / ARAÇ / DEĞERLENDİRME</th>
+                            </tr>
+                        </thead>
+                        <tbody>
                 `;
-                container.appendChild(table);
+
+                planlar.forEach(p => {
+                    htmlContent += `
+                        <tr>
+                            <td><b>${p.uda}</b></td>
+                            <td>
+                                <ul style="margin:0; padding-left:15px; list-style-type:square;">
+                                    ${p.kdaList.map(k => `<li style="margin-bottom:2px;">${k}</li>`).join('')}
+                                </ul>
+                            </td>
+                            <td>
+                                <div style="margin-bottom:6px;"><b>Yöntem:</b> ${p.yontemler.join(', ')}</div>
+                                <div style="margin-bottom:6px;"><b>Araç:</b> ${p.araclar.join(', ')}</div>
+                                <div><b>Değ.:</b> ${p.degerlendirme.join(', ')} (${p.olcut})</div>
+                            </td>
+                        </tr>
+                    `;
+                });
+
+                htmlContent += `
+                        </tbody>
+                    </table>
+
+                    <div class="imza-bolumu">
+                        <table class="imza-table">
+                            <tr>
+                                <td>
+                                    <span class="imza-isim">${mudur}</span>
+                                    <span class="imza-unvan">Okul Müdürü</span>
+                                    <div class="imza-cizgi"></div>
+                                </td>
+                                <td>
+                                    <span class="imza-isim">${sinifOgr}</span>
+                                    <span class="imza-unvan">Sınıf Öğretmeni</span>
+                                    <div class="imza-cizgi"></div>
+                                </td>
+                                <td>
+                                    <span class="imza-isim">${rehber}</span>
+                                    <span class="imza-unvan">Rehber Öğretmen</span>
+                                    <div class="imza-cizgi"></div>
+                                </td>
+                                <td>
+                                    <span class="imza-isim">${veli}</span>
+                                    <span class="imza-unvan">Veli</span>
+                                    <div class="imza-cizgi"></div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                `;
+                
+                pageDiv.innerHTML = htmlContent;
+                printArea.appendChild(pageDiv);
             });
         }
     </script>
-
-    <!-- YAZDIRMA ŞABLONU -->
-    <div class="print-only">
-        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid black; padding-bottom: 10px; margin-bottom: 20px;">
-            <div style="width: 80px; text-align:center; font-size: 8pt; font-weight: bold; white-space: pre-wrap;" id="p_okulBaslik"></div>
-            <div style="flex-grow: 1; text-align: center;">
-                <h1 style="margin:0; font-size: 16pt;">BİREYSELLEŞTİRİLMİŞ EĞİTİM PROGRAMI (BEP)</h1>
-            </div>
-            <div style="width: 80px;"></div>
-        </div>
-        
-        <table style="width: 100%; border: 1px solid black; margin-bottom: 15px;">
-            <tr>
-                <td style="width: 20%; background: #f0f0f0; font-weight: bold;">Öğrenci Adı Soyadı</td><td style="width: 30%;"><span id="p_ad"></span></td>
-                <td style="width: 20%; background: #f0f0f0; font-weight: bold;">Okul No</td><td style="width: 30%;"><span id="p_no"></span></td>
-            </tr>
-            <tr>
-                <td style="background: #f0f0f0; font-weight: bold;">Sınıfı / Şubesi</td><td><span id="p_sinif"></span></td>
-                <td style="background: #f0f0f0; font-weight: bold;">Eğitsel Tanı</td><td><span id="p_tani"></span></td>
-            </tr>
-            <tr><td style="background: #f0f0f0; font-weight: bold;">BEP Dönemi</td><td colspan="3"><span id="p_tarih"></span></td></tr>
-        </table>
-
-        <div style="border: 1px solid black; margin-bottom: 20px;">
-            <div style="background: #f0f0f0; font-weight: bold; padding: 5px; border-bottom: 1px solid black; text-align: center;">EĞİTSEL PERFORMANS DÜZEYİ</div>
-            <div style="padding: 10px; min-height: 60px; white-space: pre-wrap; font-size: 10pt;" id="p_perf"></div>
-        </div>
-
-        <div id="p_dersler"></div>
-
-        <div style="margin-top: 30px; page-break-inside: avoid;">
-            <h3 style="text-align: center; font-weight: bold; margin-bottom: 10px; font-size: 11pt;">BEP GELİŞTİRME BİRİMİ</h3>
-            <table class="imza-bolumu" style="width: 100%; border: none;">
-                <tr style="border: none;">
-                    <td style="border: none;"><div class="imza-cizgi">Birim Başkanı<br><span id="p_mudur" style="font-weight: normal;"></span></div></td>
-                    <td style="border: none;"><div class="imza-cizgi">Sınıf Öğretmeni<br><span id="p_sinifOgr" style="font-weight: normal;"></span></div></td>
-                    <td style="border: none;"><div class="imza-cizgi">Rehber Öğretmen<br><span id="p_rehber" style="font-weight: normal;"></span></div></td>
-                    <td style="border: none;"><div class="imza-cizgi">Veli<br><span id="p_veli" style="font-weight: normal;"></span></div></td>
-                </tr>
-            </table>
-        </div>
-        
-        <div style="font-size: 8pt; text-align: center; color: #666; margin-top: 20px;">
-            *Bu form, Özel Eğitim Hizmetleri Yönetmeliği doğrultusunda MEB BEP Asistanı ile hazırlanmıştır. <br>
-            <span style="font-size: 7pt; opacity: 0.7;">Geliştirici: Sami GÜREVİN</span>
-        </div>
-    </div>
-
 </body>
 </html>
