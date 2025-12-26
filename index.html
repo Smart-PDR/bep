@@ -63,7 +63,7 @@
             transition: max-height 0.3s ease-out;
         }
         .multi-select-dropdown.open {
-            max-height: 400px; /* Seçim kolaylığı için yükseklik artırıldı */
+            max-height: 400px;
             overflow-y: auto;
             border: 1px solid #e2e8f0;
         }
@@ -179,7 +179,7 @@
 </head>
 <body class="bg-slate-100 text-slate-800">
 
-    <!-- KARŞILAMA EKRANI (REHBER) -->
+    <!-- KARŞILAMA EKRANI -->
     <div id="welcomeOverlay" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-[100] flex items-center justify-center transition-all duration-500 no-print">
         <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-lg w-full mx-4 relative overflow-hidden border border-slate-200 fade-in">
             <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-mebRed via-mebBlue to-mebYellow"></div>
@@ -222,7 +222,7 @@
         </div>
     </div>
     
-    <!-- DETAYLI KULLANIM KILAVUZU MODAL -->
+    <!-- KILAVUZ MODAL -->
     <div id="kilavuzModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-[200] hidden items-center justify-center no-print">
         <div class="bg-white w-full max-w-6xl h-auto max-h-[90vh] rounded-2xl shadow-2xl flex flex-col relative fade-in mx-4">
             <div class="flex justify-between items-center p-6 border-b border-slate-200 bg-slate-50 rounded-t-2xl">
@@ -312,7 +312,7 @@
                     </div>
                     <div>
                         <h1 class="font-bold text-lg text-slate-800 leading-tight">MEB BEP Asistanı v10.3</h1>
-                        <p class="text-[10px] text-slate-500 font-medium">Geliştirici: Sami GÜREVİN</p>
+                        <p class="text-[10px] text-slate-500 font-medium">Profesyonel Sürüm</p>
                     </div>
                 </div>
                 <div class="flex gap-2">
@@ -642,15 +642,194 @@
             "Yapıştırıcı", "Yün", "Yürüyüş Bandı"
         ];
         
-        // Örnek Müfredat (Kısaltılmış)
+        // Örnek Müfredat (Güncellenmiş 1. Sınıf Verileri ile)
         const MUFREDAT = {
             "1": {
                 "Türkçe": [
-                    { uda: "T.1. Okuma yazma becerilerini geliştirir.", kda: ["Sesi hisseder, tanır ve ayırt eder.", "Harfi okur ve yazar.", "Hece, kelime ve cümle oluşturur."] },
-                    { uda: "T.1. Görsel okuma becerilerini geliştirir.", kda: ["Görsellerden hareketle olayları anlatır.", "Şekil ve sembollerin anlamlarını bilir."] }
+                    { 
+                        uda: "Temel dinleme ve izleme becerilerini kullanarak anlam oluşturur.", 
+                        kda: [
+                            "Dinlediği sesin kaynağını (doğal veya yapay) tahmin ederek söyler.",
+                            "Dinleme esnasında konuşmaya dâhil olmak için uygun zamanda söz alır.",
+                            "Görsellerden hareketle dinleyeceği/izleyeceği metnin konusu hakkında tahminde bulunur.",
+                            "Dinlediklerini/izlediklerini kendi yaşantısı ve ön bilgileriyle karşılaştırarak çıkarımlarda bulunur."
+                        ] 
+                    },
+                    { 
+                        uda: "Temel okuma becerilerini kazanır ve geliştirir.", 
+                        kda: [
+                            "Öğrenilen seslere karşılık gelen harfleri tanır ve diğerlerinden ayırt eder.",
+                            "Harf ve heceleri doğru seslendirerek okur.",
+                            "Öğrendiği seslerden oluşan sözcük ve cümleleri işitilebilir bir ses düzeyinde okur.",
+                            "Okuduğu metnin konusunu ve ana fikrini belirler."
+                        ] 
+                    },
+                    { 
+                        uda: "Yazılı anlatım becerilerini yönetir ve içerik oluşturur.", 
+                        kda: [
+                            "Yazma materyallerini (kalem, defter) kuralına uygun kullanır.",
+                            "Harfleri ve rakamları temel formuna ve yazım yönlerine uygun olarak yazar.",
+                            "Hece, sözcük ve cümleler arasında uygun boşluk bırakarak yazar.",
+                            "Görsellerle ilgili basit sözcük ve cümleler yazar.",
+                            "Yazılarında temel noktalama işaretlerini (nokta, kesme işareti, soru işareti) kuralına uygun kullanır."
+                        ] 
+                    },
+                    { 
+                        uda: "Sözlü iletişim (konuşma) becerilerini etkili bir şekilde kullanır.", 
+                        kda: [
+                            "Öğrendiği hece, sözcük ve cümleleri doğru telaffuz ederek söyler.",
+                            "Dinlediği veya izlediği bir metni ana hatlarıyla anlatır.",
+                            "Konuşmalarında nezaket ifadelerini ve hitap sözlerini yerinde kullanır."
+                        ] 
+                    },
+                    { 
+                        uda: "Okuma ve yazma süreçlerini değerlendirir ve geliştirir.", 
+                        kda: [
+                            "Yazılarındaki hataları (harf eksikliği, yazım yanlışı vb.) fark eder ve düzeltir.",
+                            "Okuma ve dinleme sürecindeki olumlu davranışlarını bir sonraki çalışmasına aktarır."
+                        ] 
+                    }
                 ],
                 "Matematik": [
-                    { uda: "M.1. Doğal sayıları tanır.", kda: ["20'ye kadar ritmik sayar.", "Rakamları okur ve yazar.", "Nesne sayısını belirler."] }
+                    { 
+                        uda: "Nesnelerin geometrisi ve uzamsal ilişkiler konusunda temel beceriler sergiler.", 
+                        kda: [
+                            "Hedefe ulaşmak için mesafe ve yön içeren (önünde, arkasında, sağında, solunda vb.) yönergeleri çözümler.",
+                            "Nesnelerin eşliğini (boyut, renk, biçim) belirlediği bir ölçüte göre değerlendirir.",
+                            "Geometrik şekilleri (üçgen, kare, dikdörtgen, çember) tanır ve çevrelerindeki nesnelerle ilişkilendirir."
+                        ] 
+                    },
+                    { 
+                        uda: "Sayılar ve nicelikler arasındaki ilişkileri kavrayarak temel sayma becerilerini kullanır.", 
+                        kda: [
+                            "20’ye kadar olan sayıları (20 dâhil) ve rakamları nesne gruplarının büyüklüklerini temsil etmek için kullanır.",
+                            "Dağınık veya düzenli bir nesne grubunu sayarken parçalar arasındaki ilişkileri belirler.",
+                            "Nesnelerin sıra sayısını (birinci, ikinci vb.) göstererek ifade eder.",
+                            "İki niceliğin büyüklüğünü “çok”, “daha çok”, “az”, “daha az” veya “eşit” terimleriyle karşılaştırır.",
+                            "20 içindeki sayıları 'onluk' ve 'birlik' yapılarına ayırarak modellerle gösterir."
+                        ] 
+                    },
+                    { 
+                        uda: "İşlemlerden cebirsel düşünmeye geçiş süreçlerini uygular.", 
+                        kda: [
+                            "Toplama ve çıkarma işlemlerinin anlamını günlük yaşam durumlarıyla ilişkilendirir.",
+                            "20’ye kadar olan sayılarla eldesiz toplama ve onluk bozma gerektirmeyen çıkarma işlemlerini yapar.",
+                            "Verilen bir sayı örüntüsündeki kuralı fark eder ve örüntüyü devam ettirir."
+                        ] 
+                    },
+                    { 
+                        uda: "Ölçme (uzunluk, paralarımız, zaman) ile ilgili temel problemleri çözer.", 
+                        kda: [
+                            "Nesnelerin uzunluklarını standart olmayan birimlerle (karış, adım vb.) karşılaştırır ve ölçer.",
+                            "Paralarımızı (Kuruş ve Türk Lirası) tanır ve temel alışveriş durumlarında kullanır.",
+                            "Zaman ölçme birimlerini (gün, hafta, ay, mevsim) tanır ve tam/yarım saatleri okur."
+                        ] 
+                    },
+                    { 
+                        uda: "Veriye dayalı araştırma sürecini yönetir.", 
+                        kda: [
+                            "Günlük yaşamla ilgili bir araştırma sorusu oluşturur ve basit veriler toplar.",
+                            "Topladığı verileri çetele veya sıklık tablosu kullanarak görselleştirir.",
+                            "Oluşturduğu nesne grafiğini veya tabloları yorumlayarak araştırma sonuçlarını açıklar."
+                        ] 
+                    }
+                ],
+                "Hayat Bilgisi": [
+                    { 
+                        uda: "Okul ortamına uyum sağlar ve temel iletişim becerilerini geliştirir.", 
+                        kda: [
+                            "Öğretmeni ve arkadaşları kendilerini tanıtırken onları etkin bir şekilde dinler.",
+                            "Kendini tanıtırken çevresiyle sözlü ve sözsüz etkileşim kurar.",
+                            "Sınıfını, okulunun bölümlerini ve okul çalışanlarını fark ederek gözlemlerini ifade eder.",
+                            "Sınıf ve okul ortamındaki temel kuralları fark eder.",
+                            "Belirlenen sınıf ve okul kurallarına uygun davranışlar sergiler.",
+                            "Temel fiziksel özelliklerini ve mutluluk, üzüntü gibi temel duygularını açıklar."
+                        ] 
+                    },
+                    { 
+                        uda: "Sağlıklı yaşam ve güvenlik kurallarına uygun davranır.", 
+                        kda: [
+                            "Sağlıklı büyüme ve gelişme için yapması gerekenleri (beslenme, uyku vb.) belirler.",
+                            "Kişisel alanının sınırlarını belirleyerek bu sınırlara uygun hareket eder.",
+                            "Temel trafik kurallarına (yaya geçidi, trafik ışıkları vb.) uygun davranır.",
+                            "Acil durumlarda (yangın, deprem vb.) yapılması gerekenleri ve aranacak numaraları belirler."
+                        ] 
+                    },
+                    { 
+                        uda: "Aile yapısını ve evdeki sorumluluklarını kavrar.", 
+                        kda: [
+                            "Aile olmanın önemini fark eder.",
+                            "Aile yaşamında nezaket ve görgü kurallarına uygun ifadeler kullanır.",
+                            "Ev içerisinde kendine verilen temel görev ve sorumlulukları yerine getirir."
+                        ] 
+                    },
+                    { 
+                        uda: "Yaşadığı çevreyi, ülkesini ve kültürel değerlerini tanır.", 
+                        kda: [
+                            "Yaşadığı yerin (köy, ilçe, il vb.) temel özelliklerini fark eder.",
+                            "Yaşadığı yerdeki tarihi, doğal ve turistik yerleri belirler.",
+                            "Türk bayrağının ve İstiklâl Marşı’nın vatanı için önemini kavrar.",
+                            "Millî ve dini bayramlar ile belirli günlerin önemini kavrar.",
+                            "Farklı kültürlerden gelen insanların yaşam şekillerine ve alışkanlıklarına saygı duyar."
+                        ] 
+                    },
+                    { 
+                        uda: "Doğa ve çevreye karşı duyarlılık geliştirir.", 
+                        kda: [
+                            "Yakın çevresindeki hayvanların ve bitkilerin yaşam süreçlerini gözlemler.",
+                            "Doğayı ve çevreyi korumak için üzerine düşen sorumlulukları yerine getirir.",
+                            "Geri dönüşümün önemini kavrar ve atıkları uygun şekilde ayrıştırır.",
+                            "Mevsimlerin özelliklerini ve insan yaşamı üzerindeki etkilerini açıklar."
+                        ] 
+                    },
+                    { 
+                        uda: "Bilim, teknoloji ve sanatla ilgili temel farkındalık kazanır.", 
+                        kda: [
+                            "Bilim ve teknoloji alanında merak ettiği konularla ilgili sorular sorar.",
+                            "Günlük yaşamda kullanılan teknolojik araçların güvenli kullanımı hakkında bilgi sahibi olur.",
+                            "Sanatın ve sanatsal faaliyetlerin günlük yaşamdaki yerini fark eder."
+                        ] 
+                    }
+                ],
+                "Beden Eğitimi ve Oyun": [
+                    { 
+                        uda: "Oyunlarda temel hareket kavramlarını ve güvenli uygulama becerilerini sergiler.", 
+                        kda: [
+                            "Beden farkındalığı, alan farkındalığı, efor ve hareket ilişkileri kavramlarını birbirinden ayırt eder.",
+                            "Hareket ile beden ve alan farkındalığı gibi temel kavramlar arasında bağ kurar.",
+                            "Oyunlar sırasında ortaya çıkabilecek riskleri tanımlayarak bu risklere karşı önleyici tedbirler alır."
+                        ] 
+                    },
+                    { 
+                        uda: "Temel hareket becerilerini farklı durumlarda ve oyunlarda sergiler.", 
+                        kda: [
+                            "Yer değiştirme, nesne kontrolü ve denge becerilerini algılar ve bu becerilerin basamaklarını gösterir.",
+                            "Temel hareket becerilerini (yer değiştirme, nesne kontrolü, denge) oyunlar içerisinde ve farklı durumlarda uygular."
+                        ] 
+                    },
+                    { 
+                        uda: "Oyun kurallarına, taktiklere ve adil oyun anlayışına uygun hareket eder.", 
+                        kda: [
+                            "Katıldığı oyunlarda belirlenen oyun kurallarına eksiksiz uyar.",
+                            "Oyunlar sırasında basit taktik ve stratejileri kullanarak hedefe yönelik hareket eder.",
+                            "Adil oyun anlayışını açıklar ve oyunlarda bu anlayışa uygun davranışlar sergiler."
+                        ] 
+                    },
+                    { 
+                        uda: "Ritmik hareket becerilerini sergiler.", 
+                        kda: [
+                            "Temel hareket becerilerini kullanarak verilen bir ritmi algılar.",
+                            "Verilen ritme uygun hareket eder ve ritmik hareket becerilerini grup veya bireysel olarak sergiler."
+                        ] 
+                    },
+                    { 
+                        uda: "Fiziksel aktiviteye katılım sağlar ve sağlıklı yaşam bilinci geliştirir.", 
+                        kda: [
+                            "Fiziksel aktivite düzeyini fark eder ve bu düzeyi geliştirmek için basit bir plan yapar.",
+                            "Hazırladığı fiziksel aktivite planını okul içi ve dışı ortamlarda uygular.",
+                            "Sağlıklı büyüme ve gelişme ile fiziksel aktivite arasındaki ilişkiyi açıklar."
+                        ] 
+                    }
                 ]
             },
             "2": { "Türkçe": [], "Matematik": [], "Hayat Bilgisi": [] },
